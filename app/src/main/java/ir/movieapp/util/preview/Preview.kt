@@ -1,4 +1,4 @@
-package com.jetpack.designsystem
+package ir.movieapp.util.preview
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
