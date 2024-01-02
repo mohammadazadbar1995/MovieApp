@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -68,5 +70,60 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
 
+    // Compose dependencies
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.17.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Coroutine Lifecycle Scopes
+    implementation("androidx.lifecycle:lifecycle-view-model-ktx:2.4.1")
+
+    //Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    ksp("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+
+    // Timber
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // RamCosta Navigation
+    implementation("io.github.raamcosta.compose-destinations:animations-core:1.3.4-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.3.4-beta")
+
+    // Navigation animation
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.2-alpha")
+
+    // Accompanist System UI controller
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.2-alpha")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Insets
+    implementation("com.google.accompanist:accompanist-insets:0.17.0")
+
+    // Timber
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // Paging Compose
+    implementation("androidx.paging:paging-compose:3.2.1")
+
+    // Swipe to refresh
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
+
+    // Livedata
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 
 }
