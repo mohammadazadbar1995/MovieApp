@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ir.movieapp.R
+import ir.movieapp.ui.screens.destinations.HomeScreenDestination
+import ir.movieapp.util.preview.Constants.SPLASH_SCREEN_DURATION
 import ir.movieapp.util.preview.ThemePreviews
 import kotlinx.coroutines.delay
 
@@ -30,10 +32,14 @@ fun SplashScreen(
 
     ) {
 
-       /* LaunchedEffect{
-            delay(3000)
-            navigator.navigate(navigator)
-        }*/
+        LaunchedEffect(
+            key1 = true
+        ) {
+            delay(SPLASH_SCREEN_DURATION)
+            navigator.popBackStack()
+            navigator.navigate(HomeScreenDestination)
+        }
+
         Image(
             modifier = Modifier
                 .fillMaxWidth()
