@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.movieapp.data.TMDBApi
+import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.util.preview.Constants.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,6 +46,12 @@ object AppModule {
             .client(okHttpClient)
             .build()
             .create(TMDBApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesGenreRepository(api: TMDBApi): GenreRepository {
+        return GenreRepository(api)
     }
 
 
