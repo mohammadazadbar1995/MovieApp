@@ -1,4 +1,4 @@
-package ir.movieapp
+package ir.movieapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
