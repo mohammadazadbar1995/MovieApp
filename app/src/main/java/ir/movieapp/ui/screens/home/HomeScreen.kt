@@ -51,67 +51,76 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-    Scaffold(
-        topBar = {
-            Surface(shadowElevation = 5.dp) {
-                TopAppBar(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = {
-                        Column {
-                            Image(
-                                modifier = Modifier
-                                    .size(width = 90.dp, height = 90.dp)
-                                    .padding(8.dp),
-                                painter = painterResource(id = R.drawable.muviz),
-                                contentDescription = "Image",
-                                colorFilter = ColorFilter.tint(color = primaryPink)
-                            )
-                        }
-                    },
-                    colors = topAppBarColors(containerColor = primaryDark),
-                    actions = {
-                        IconButton(onClick = { /* doSomething() */ }) {
-                            Icon(Icons.Filled.Search, contentDescription = null)
-                        }
-                    },
-                )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Scaffold(
+            topBar = {
+                Surface(shadowElevation = 5.dp) {
+                    TopAppBar(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = {
+                            Column {
+                                Image(
+                                    modifier = Modifier
+                                        .size(width = 90.dp, height = 90.dp)
+                                        .padding(8.dp),
+                                    painter = painterResource(id = R.drawable.muviz),
+                                    contentDescription = "Image",
+                                    colorFilter = ColorFilter.tint(color = primaryPink)
+                                )
+                            }
+                        },
+                        colors = topAppBarColors(containerColor = primaryDark),
+                        actions = {
+                            IconButton(onClick = { /* doSomething() */ }) {
+                                Icon(Icons.Filled.Search, contentDescription = null)
+                            }
+                        },
+                    )
+                }
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = innerPadding.calculateTopPadding())
+                    .fillMaxSize()
+            ) {
+
+                item {
+                    FilmCategory(
+                        listOf("Movies", "Tv Shows"),
+                        modifier = Modifier.fillMaxWidth(),
+                        viewModel = viewModel
+                    )
+
+
+                }
+
+                item {
+                    Text(
+                        text = "Genres",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 22.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+                }
+
+                item {
+                    Genres(
+                        viewModel = viewModel,
+                    )
+                }
             }
         }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-
-            item {
-                FilmCategory(
-                    listOf("Movies", "Tv Shows"),
-                    modifier = Modifier,
-                    viewModel = viewModel
-                )
 
 
-            }
-
-            item {
-                Text(
-                    text = "Genres",
-                    modifier = Modifier.padding(8.dp),
-                    fontSize = 22.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(5.dp))
-            }
-
-            item {
-                Genres(
-                    viewModel = viewModel,
-                )
-            }
-        }
     }
+
 
 }
 
@@ -150,10 +159,11 @@ fun Genres(
             items(genres.size) { index ->
                 Text(
                     text = genres[index].name,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier
+                        .padding(4.dp)
                         .clip(
                             RoundedCornerShape(
                                 size = 8.dp
@@ -161,7 +171,7 @@ fun Genres(
                         )
                         .clickable {
                             Timber
-                                .tag("TAG")
+                                .tag("Gernres_HomeScreen")
                                 .e("Genres: %s", genres[index].name)
                         }
                 )
