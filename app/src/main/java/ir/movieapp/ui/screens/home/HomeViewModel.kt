@@ -9,6 +9,7 @@ import ir.movieapp.data.remote.response.GenreResponse
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.util.preview.Resource
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +21,9 @@ class HomeViewModel @Inject constructor(
     val movieGenre: State<List<GenreResponse.Genre>> = _movieGenre
 
 
+    init {
+        getMoviesGenres()
+    }
     private fun getMoviesGenres() {
         viewModelScope.launch {
             val genre = genreRepository.getMoviesGenres()
@@ -28,10 +32,12 @@ class HomeViewModel @Inject constructor(
                     genre.data?.let {
                         _movieGenre.value = it.genres
                     }
+
+                    Timber.e("Resource.Success",genre.data.toString())
                 }
 
                 is Resource.Error -> {
-
+                    Timber.e("Resource.Error",genre.message.toString())
                 }
 
                 is Resource.Loading -> {

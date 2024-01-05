@@ -14,7 +14,8 @@ class GenreRepository @Inject constructor(
         val response = try {
             api.getMovieGenres()
         } catch (e: Exception) {
-            return Resource.Error("Unknown error occurred")
+            Timber.e("Resource.Error",e.message.toString())
+            return Resource.Error(e.message.toString())
         }
         Timber.d("Movies genres: $response")
         return Resource.Success(response)

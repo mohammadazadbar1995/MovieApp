@@ -9,7 +9,7 @@ interface TMDBApi {
 
     @GET("genre/movie/list")
     suspend fun getMovieGenres(
-        @Query("epi_key") apiKey: String = API_KEY,
+        @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = "en"
     ): GenreResponse
 }
