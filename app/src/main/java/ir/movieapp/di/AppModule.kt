@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.movieapp.data.TMDBApi
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
+import ir.movieapp.data.repository.MoviesRepository
 import ir.movieapp.util.preview.Constants.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,7 +27,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(httpLoggingInterceptor : HttpLoggingInterceptor): OkHttpClient {
+    fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .callTimeout(15, TimeUnit.SECONDS)
@@ -54,5 +55,9 @@ object AppModule {
         return GenreRepository(api)
     }
 
-
+    @Provides
+    @Singleton
+    fun providesMoviesRepository(api: TMDBApi): MoviesRepository {
+        return MoviesRepository(api)
+    }
 }

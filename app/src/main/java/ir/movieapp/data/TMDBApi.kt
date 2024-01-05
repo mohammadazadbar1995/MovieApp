@@ -1,7 +1,9 @@
 package ir.movieapp.data
 
 import ir.movieapp.data.remote.response.GenreResponse
+import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.util.preview.Constants.API_KEY
+import ir.movieapp.util.preview.Constants.STARTING_PAGE_INDEX
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,4 +14,12 @@ interface TMDBApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = "en"
     ): GenreResponse
+
+
+    @GET("trending/movie/day")
+    suspend fun getTrendingMovie(
+        @Query("api_key")apiKey: String = API_KEY,
+        @Query("language")language: String = "en",
+        @Query("page")page: Int = STARTING_PAGE_INDEX
+    ):TrendingResponse
 }
