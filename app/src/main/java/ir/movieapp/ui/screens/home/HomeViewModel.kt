@@ -20,6 +20,9 @@ class HomeViewModel @Inject constructor(
     val movieGenre: State<List<GenreResponse.Genre>> = _movieGenre
 
 
+    init {
+        getMoviesGenres()
+    }
     private fun getMoviesGenres() {
         viewModelScope.launch {
             val genre = genreRepository.getMoviesGenres()
