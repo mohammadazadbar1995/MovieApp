@@ -10,9 +10,12 @@ import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.movieapp.data.remote.response.GenreResponse
 import ir.movieapp.data.remote.response.PopularResponse
+import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
+import ir.movieapp.data.repository.NowPlayingResponse
+import ir.movieapp.data.repository.UpcomingResponse
 import ir.movieapp.util.preview.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -38,12 +41,27 @@ class HomeViewModel @Inject constructor(
         mutableStateOf<Flow<PagingData<PopularResponse.Popular>>>(emptyFlow())
     val popularMovies: State<Flow<PagingData<PopularResponse.Popular>>> = _popularMovies
 
+    private var _upcomingMovies =
+        mutableStateOf<Flow<PagingData<UpcomingResponse.Upcoming>>>(emptyFlow())
+    val upcomingMovies: State<Flow<PagingData<UpcomingResponse.Upcoming>>> = _upcomingMovies
+
+    private var _nowPlayingMovies =
+        mutableStateOf<Flow<PagingData<NowPlayingResponse.NowPlaying>>>(emptyFlow())
+    val nowPlayingMovies: State<Flow<PagingData<NowPlayingResponse.NowPlaying>>> = _nowPlayingMovies
+
+    private var _topRatedMovies =
+        mutableStateOf<Flow<PagingData<TopRatedResponse.TopRated>>>(emptyFlow())
+    val topRatedMovies: State<Flow<PagingData<TopRatedResponse.TopRated>>> = _topRatedMovies
+
 
     init {
         getMoviesGenres()
 
         getTrendingMovies(null)
         getPopularMovies(null)
+        getUpcomingMovies(null)
+        getNowPlayingMovies(null)
+        getTopRatedMovies(null)
     }
 
     private fun getMoviesGenres() {
@@ -95,6 +113,48 @@ class HomeViewModel @Inject constructor(
                 }.cachedIn(viewModelScope)
             } else {
                 moviesRepository.getPopularMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getUpcomingMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _upcomingMovies.value = if (genreId != null) {
+                moviesRepository.getUpcomingMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getUpcomingMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getNowPlayingMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _nowPlayingMovies.value = if (genreId != null) {
+                moviesRepository.getNowPlayingMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getNowPlayingMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getTopRatedMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _topRatedMovies.value = if (genreId != null) {
+                moviesRepository.getTopRatedMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
             }
         }
     }

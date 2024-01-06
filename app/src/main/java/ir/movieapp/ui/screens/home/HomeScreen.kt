@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import ir.movieapp.R
@@ -155,13 +156,173 @@ fun HomeScreen(
                         viewModel = viewModel,
                     )
                 }
+
+                item {
+                    Text(
+                        text = "Upcoming",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 22.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                item {
+                    UpcomingMovies(
+                        viewModel = viewModel,
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "Now Playing",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 22.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                item {
+                    NowPlayingMovies(
+                        viewModel = viewModel,
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "Top Rated",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 22.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                item {
+                    TopRatedMovies(
+                        viewModel = viewModel,
+                    )
+                }
             }
         }
 
 
     }
+}
 
+@Composable
+fun TopRatedMovies(viewModel: HomeViewModel) {
+    val topRatedMovies = viewModel.topRatedMovies.value.collectAsLazyPagingItems()
 
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(topRatedMovies.itemCount) { film ->
+                Timber.e("TopRatedMovies: %s", topRatedMovies[film]?.posterPath)
+                MovieItem(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(130.dp),
+                    imageUrl = "$IMAGE_BASE_URL/${topRatedMovies[film]?.posterPath}"
+                )
+            }
+
+            Timber.e("TopRatedMovies: Loading")
+            if (topRatedMovies.loadState.refresh is LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NowPlayingMovies(viewModel: HomeViewModel) {
+    val nowPlaying = viewModel.nowPlayingMovies.value.collectAsLazyPagingItems()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(nowPlaying.itemCount) { film ->
+                Timber.e("NowPlayingMovies: %s", nowPlaying[film]?.posterPath)
+                MovieItem(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(130.dp),
+                    imageUrl = "$IMAGE_BASE_URL/${nowPlaying[film]?.posterPath}"
+                )
+            }
+
+            Timber.e("NowPlayingMovies: Loading")
+            if (nowPlaying.loadState.refresh is LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun UpcomingMovies(viewModel: HomeViewModel) {
+    val upcomingMovie = viewModel.upcomingMovies.value.collectAsLazyPagingItems()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(upcomingMovie.itemCount) { film ->
+                Timber.e("UpcomingMovies: %s", upcomingMovie[film]?.posterPath)
+                MovieItem(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(130.dp),
+                    imageUrl = "$IMAGE_BASE_URL/${upcomingMovie[film]?.posterPath}"
+                )
+            }
+
+            Timber.e("UpcomingMovies: Loading")
+            if (upcomingMovie.loadState.refresh is LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
