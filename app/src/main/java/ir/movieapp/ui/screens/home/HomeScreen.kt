@@ -188,10 +188,64 @@ fun HomeScreen(
                         viewModel = viewModel,
                     )
                 }
+
+                item {
+                    Text(
+                        text = "Top Rated",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 22.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                item {
+                    TopRatedMovies(
+                        viewModel = viewModel,
+                    )
+                }
             }
         }
 
 
+    }
+}
+
+@Composable
+fun TopRatedMovies(viewModel: HomeViewModel) {
+    val topRatedMovies = viewModel.topRatedMovies.value.collectAsLazyPagingItems()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(topRatedMovies.itemCount) { film ->
+                Timber.e("TopRatedMovies: %s", topRatedMovies[film]?.posterPath)
+                MovieItem(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(130.dp),
+                    imageUrl = "$IMAGE_BASE_URL/${topRatedMovies[film]?.posterPath}"
+                )
+            }
+
+            Timber.e("TopRatedMovies: Loading")
+            if (topRatedMovies.loadState.refresh is LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+        }
     }
 }
 
