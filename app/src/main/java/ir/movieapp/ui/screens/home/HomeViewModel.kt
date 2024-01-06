@@ -10,6 +10,7 @@ import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.movieapp.data.remote.response.GenreResponse
 import ir.movieapp.data.remote.response.PopularResponse
+import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
@@ -48,6 +49,11 @@ class HomeViewModel @Inject constructor(
         mutableStateOf<Flow<PagingData<NowPlayingResponse.NowPlaying>>>(emptyFlow())
     val nowPlayingMovies: State<Flow<PagingData<NowPlayingResponse.NowPlaying>>> = _nowPlayingMovies
 
+    private var _topRatedMovies =
+        mutableStateOf<Flow<PagingData<TopRatedResponse.TopRated>>>(emptyFlow())
+    val topRatedMovies: State<Flow<PagingData<TopRatedResponse.TopRated>>> = _topRatedMovies
+
+
     init {
         getMoviesGenres()
 
@@ -55,6 +61,7 @@ class HomeViewModel @Inject constructor(
         getPopularMovies(null)
         getUpcomingMovies(null)
         getNowPlayingMovies(null)
+        getTopRatedMovies(null)
     }
 
     private fun getMoviesGenres() {
@@ -134,6 +141,20 @@ class HomeViewModel @Inject constructor(
                 }.cachedIn(viewModelScope)
             } else {
                 moviesRepository.getNowPlayingMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getTopRatedMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _topRatedMovies.value = if (genreId != null) {
+                moviesRepository.getTopRatedMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
             }
         }
     }
