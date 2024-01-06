@@ -1,6 +1,7 @@
 package ir.movieapp.data
 
 import ir.movieapp.data.remote.response.GenreResponse
+import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.util.preview.Constants.API_KEY
 import ir.movieapp.util.preview.Constants.STARTING_PAGE_INDEX
@@ -18,8 +19,15 @@ interface TMDBApi {
 
     @GET("trending/movie/day")
     suspend fun getTrendingMovie(
-        @Query("api_key")apiKey: String = API_KEY,
-        @Query("language")language: String = "en",
-        @Query("page")page: Int = STARTING_PAGE_INDEX
-    ):TrendingResponse
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en",
+        @Query("page") page: Int = STARTING_PAGE_INDEX
+    ): TrendingResponse
+
+    @GET("movie/popular")
+    suspend fun getPopularMovies(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en",
+        @Query("page") page: Int = STARTING_PAGE_INDEX
+    ): PopularResponse
 }
