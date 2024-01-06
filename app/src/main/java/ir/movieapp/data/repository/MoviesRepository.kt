@@ -6,9 +6,11 @@ import androidx.paging.PagingData
 import ir.movieapp.data.TMDBApi
 import ir.movieapp.data.paging.NowPlayingMoviesSource
 import ir.movieapp.data.paging.PopularMoviesSource
+import ir.movieapp.data.paging.TopRatedMoviesResource
 import ir.movieapp.data.paging.TrendingMoviesSource
 import ir.movieapp.data.paging.UpcomingMoviesSource
 import ir.movieapp.data.remote.response.PopularResponse
+import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -53,5 +55,13 @@ class MoviesRepository @Inject constructor(private val api: TMDBApi) {
         ).flow
     }
 
+    fun getTopRatedMovies(): Flow<PagingData<TopRatedResponse.TopRated>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = false, pageSize = 27),
+            pagingSourceFactory = {
+                TopRatedMoviesResource(api)
+            }
+        ).flow
+    }
 
 }
