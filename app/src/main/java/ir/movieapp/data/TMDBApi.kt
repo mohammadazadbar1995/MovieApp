@@ -2,6 +2,7 @@ package ir.movieapp.data
 
 import ir.movieapp.data.remote.response.GenreResponse
 import ir.movieapp.data.remote.response.PopularResponse
+import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.data.repository.NowPlayingResponse
 import ir.movieapp.data.repository.UpcomingResponse
@@ -47,4 +48,11 @@ interface TMDBApi {
         @Query("language") language: String = "en",
         @Query("page") page: Int = STARTING_PAGE_INDEX
     ): NowPlayingResponse
+
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMovies(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en",
+        @Query("page") page: Int = STARTING_PAGE_INDEX
+    ): TopRatedResponse
 }
