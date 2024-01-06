@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.movieapp.data.remote.response.GenreResponse
+import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
@@ -33,10 +34,16 @@ class HomeViewModel @Inject constructor(
         mutableStateOf<Flow<PagingData<TrendingResponse.Movie>>>(emptyFlow())
     val trendingMovies: State<Flow<PagingData<TrendingResponse.Movie>>> = _trendingMovies
 
+    private var _popularMovies =
+        mutableStateOf<Flow<PagingData<PopularResponse.Popular>>>(emptyFlow())
+    val popularMovies: State<Flow<PagingData<PopularResponse.Popular>>> = _popularMovies
+
+
     init {
         getMoviesGenres()
 
         getTrendingMovies(null)
+        getPopularMovies(null)
     }
 
     private fun getMoviesGenres() {
@@ -74,6 +81,20 @@ class HomeViewModel @Inject constructor(
                 }.cachedIn(viewModelScope)
             } else {
                 moviesRepository.getTrendingMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getPopularMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _popularMovies.value = if (genreId != null) {
+                moviesRepository.getPopularMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getPopularMovies().cachedIn(viewModelScope)
             }
         }
     }

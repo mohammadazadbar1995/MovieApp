@@ -3,6 +3,7 @@ package ir.movieapp.ui.screens.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,11 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -133,6 +137,24 @@ fun HomeScreen(
                         viewModel = viewModel,
                     )
                 }
+
+                item {
+                    Text(
+                        text = "Popular Movies",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 22.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+                }
+
+                item {
+                    PopularMovies(
+                        viewModel = viewModel,
+                    )
+                }
             }
         }
 
@@ -143,21 +165,79 @@ fun HomeScreen(
 }
 
 @Composable
+fun PopularMovies(viewModel: HomeViewModel) {
+    val popularMovie = viewModel.popularMovies.value.collectAsLazyPagingItems()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        contentAlignment = Alignment.Center
+
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(popularMovie.itemCount) { film ->
+                Timber.e("PopularMovies: %s", popularMovie[film]?.posterPath)
+                MovieItem(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(130.dp),
+                    imageUrl = "$IMAGE_BASE_URL/${popularMovie[film]?.posterPath}"
+                )
+            }
+
+            Timber.e("PopularMovies: Loading")
+
+            if (popularMovie.loadState.refresh is androidx.paging.LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun TrendingToday(viewModel: HomeViewModel) {
     val trendingMovie = viewModel.trendingMovies.value.collectAsLazyPagingItems()
 
-    LazyRow (
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-    ){
-        items(trendingMovie.itemCount) { film ->
-            Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)
-            MovieItem(
-                modifier = Modifier
-                    .height(200.dp)
-                    .width(230.dp),
-                imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
-            )
+            .height(220.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(trendingMovie.itemCount) { film ->
+                Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)
+                MovieItem(
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(230.dp),
+                    imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
+                )
+            }
+
+            Timber.e("TrendingToday: Loading")
+            if (trendingMovie.loadState.refresh is androidx.paging.LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
         }
     }
 }
