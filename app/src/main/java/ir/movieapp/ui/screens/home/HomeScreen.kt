@@ -53,6 +53,7 @@ import ir.movieapp.R
 import ir.movieapp.ui.screens.commons.MovieItem
 import ir.movieapp.ui.theme.primaryDark
 import ir.movieapp.ui.theme.primaryPink
+import ir.movieapp.util.preview.Constants
 import ir.movieapp.util.preview.Constants.IMAGE_BASE_URL
 import timber.log.Timber
 
@@ -359,7 +360,7 @@ fun PopularMovies(viewModel: HomeViewModel) {
 
             Timber.e("PopularMovies: Loading")
 
-            if (popularMovie.loadState.refresh is androidx.paging.LoadState.Loading) {
+            if (popularMovie.loadState.refresh is LoadState.Loading) {
                 item {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -375,6 +376,7 @@ fun PopularMovies(viewModel: HomeViewModel) {
 @Composable
 fun TrendingToday(viewModel: HomeViewModel) {
     val trendingMovie = viewModel.trendingMovies.value.collectAsLazyPagingItems()
+    val trendingTvSeries = viewModel.trendingTvSeries.value.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -385,19 +387,33 @@ fun TrendingToday(viewModel: HomeViewModel) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(220.dp)
         ) {
-            items(trendingMovie.itemCount) { film ->
-                Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)
-                MovieItem(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(230.dp),
-                    imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
-                )
+            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                items(trendingMovie.itemCount) { film ->
+                    Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(230.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
+                    )
+                }
+            } else {
+                items(trendingTvSeries.itemCount) { film ->
+                    Timber.e("TrendingToday: %s", trendingTvSeries[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(220.dp)
+                            .width(250.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${trendingTvSeries[film]?.posterPath}"
+                    )
+                }
             }
 
+
             Timber.e("TrendingToday: Loading")
-            if (trendingMovie.loadState.refresh is androidx.paging.LoadState.Loading) {
+            if (trendingMovie.loadState.refresh is LoadState.Loading) {
                 item {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -474,7 +490,12 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
 fun Genres(
     viewModel: HomeViewModel
 ) {
-    val genres = viewModel.movieGenre.value
+
+    val genres = if (viewModel.selectedOption.value == Constants.MOVIES) {
+        viewModel.movieGenre.value
+    } else {
+        viewModel.seriesGenre.value
+    }
 
     Column(
         modifier = Modifier
@@ -496,12 +517,18 @@ fun Genres(
                             )
                         )
                         .clickable {
-                            viewModel.setGenre(genres[index].name)
-                            viewModel.getTrendingMovies(genres[index].id)
-                            viewModel.getPopularMovies(genres[index].id)
-                            viewModel.getUpcomingMovies(genres[index].id)
-                            viewModel.getNowPlayingMovies(genres[index].id)
-                            viewModel.getTopRatedMovies(genres[index].id)
+                            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                                viewModel.setGenre(genres[index].name)
+                                viewModel.getTrendingMovies(genres[index].id)
+                                viewModel.getPopularMovies(genres[index].id)
+                                viewModel.getUpcomingMovies(genres[index].id)
+                                viewModel.getNowPlayingMovies(genres[index].id)
+                                viewModel.getTopRatedMovies(genres[index].id)
+                            } else {
+                                viewModel.setGenre(genres[index].name)
+                                viewModel.getTrendingSeries(genres[index].id)
+                            }
+
                         }
                         .background(
                             if (viewModel.selectedGenre.value == genres[index].name) {

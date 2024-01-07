@@ -15,6 +15,7 @@ import ir.movieapp.data.remote.response.TrendingResponse
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
 import ir.movieapp.data.repository.NowPlayingResponse
+import ir.movieapp.data.repository.TvSeriesRepository
 import ir.movieapp.data.repository.UpcomingResponse
 import ir.movieapp.util.preview.Constants
 import ir.movieapp.util.preview.Resource
@@ -28,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
-    private val moviesRepository: MoviesRepository
+    private val moviesRepository: MoviesRepository,
+    private val seriesRepository: TvSeriesRepository
 ) : ViewModel() {
 
     private val _selectedOption = mutableStateOf(Constants.MOVIES)
@@ -38,9 +40,16 @@ class HomeViewModel @Inject constructor(
     private val _movieGenre = mutableStateOf<List<GenreResponse.Genre>>(emptyList())
     val movieGenre: State<List<GenreResponse.Genre>> = _movieGenre
 
+    private val _seriesGenre = mutableStateOf<List<GenreResponse.Genre>>(emptyList())
+    val seriesGenre: State<List<GenreResponse.Genre>> = _seriesGenre
+
     private var _trendingMovies =
         mutableStateOf<Flow<PagingData<TrendingResponse.Movie>>>(emptyFlow())
     val trendingMovies: State<Flow<PagingData<TrendingResponse.Movie>>> = _trendingMovies
+
+    private var _trendingTvSeries =
+        mutableStateOf<Flow<PagingData<TrendingResponse.Movie>>>(emptyFlow())
+    val trendingTvSeries: State<Flow<PagingData<TrendingResponse.Movie>>> = _trendingTvSeries
 
     private var _popularMovies =
         mutableStateOf<Flow<PagingData<PopularResponse.Popular>>>(emptyFlow())
@@ -63,18 +72,31 @@ class HomeViewModel @Inject constructor(
 
     init {
         getMoviesGenres()
+        getSeriesGenres()
 
         getTrendingMovies(null)
         getPopularMovies(null)
         getUpcomingMovies(null)
         getNowPlayingMovies(null)
         getTopRatedMovies(null)
+
+        //series
+        getTrendingSeries(null)
     }
+
+
+    fun setGenre(name: String) {
+        _selectedGenre.value = name
+    }
+
+    fun setSelectedOption(item: String) {
+        _selectedOption.value = item
+    }
+
 
     private fun getMoviesGenres() {
         viewModelScope.launch {
-            val genre = genreRepository.getMoviesGenres()
-            when (genre) {
+            when (val genre = genreRepository.getMoviesGenres()) {
                 is Resource.Success -> {
                     genre.data?.let {
                         _movieGenre.value = it.genres
@@ -166,11 +188,41 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun setGenre(name: String) {
-        _selectedGenre.value = name
+
+    private fun getSeriesGenres() {
+        viewModelScope.launch {
+            when (val genre = genreRepository.getSeriesGenres()) {
+                is Resource.Success -> {
+                    genre.data?.let {
+                        _seriesGenre.value = it.genres
+                    }
+
+                    Timber.e("Resource.Success", genre.data.toString())
+                }
+
+                is Resource.Error -> {
+                    Timber.e("Resource.Error", genre.message.toString())
+                }
+
+                is Resource.Loading -> {
+
+                }
+            }
+        }
     }
 
-    fun setSelectedOption(item: String) {
-        _selectedOption.value = item
+     fun getTrendingSeries(genreId: Int? = null) {
+        viewModelScope.launch {
+            _trendingTvSeries.value = if (genreId != null) {
+                seriesRepository.getTrendingTvSeries().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                seriesRepository.getTrendingTvSeries().cachedIn(viewModelScope)
+            }
+        }
     }
+
 }

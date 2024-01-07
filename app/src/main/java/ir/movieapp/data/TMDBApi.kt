@@ -55,4 +55,19 @@ interface TMDBApi {
         @Query("language") language: String = "en",
         @Query("page") page: Int = STARTING_PAGE_INDEX
     ): TopRatedResponse
+
+
+    @GET("genre/tv/list")
+    suspend fun getTvSeriesGenres(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en"
+    ): GenreResponse
+
+    @GET("trending/tv/day")
+    suspend fun getTrendingTvSeries(
+        @Query("page") page: Int = STARTING_PAGE_INDEX,
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en"
+    ): TrendingResponse
+
 }
