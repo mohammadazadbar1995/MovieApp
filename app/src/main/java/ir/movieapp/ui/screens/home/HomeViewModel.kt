@@ -16,6 +16,7 @@ import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
 import ir.movieapp.data.repository.NowPlayingResponse
 import ir.movieapp.data.repository.UpcomingResponse
+import ir.movieapp.util.preview.Constants
 import ir.movieapp.util.preview.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -29,6 +30,10 @@ class HomeViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
+
+    private val _selectedOption = mutableStateOf(Constants.MOVIES)
+    val selectedOption: State<String> = _selectedOption
+
 
     private val _movieGenre = mutableStateOf<List<GenreResponse.Genre>>(emptyList())
     val movieGenre: State<List<GenreResponse.Genre>> = _movieGenre
@@ -53,6 +58,8 @@ class HomeViewModel @Inject constructor(
         mutableStateOf<Flow<PagingData<TopRatedResponse.TopRated>>>(emptyFlow())
     val topRatedMovies: State<Flow<PagingData<TopRatedResponse.TopRated>>> = _topRatedMovies
 
+    private val _selectedGenre = mutableStateOf("")
+    val selectedGenre: State<String> = _selectedGenre
 
     init {
         getMoviesGenres()
@@ -157,5 +164,9 @@ class HomeViewModel @Inject constructor(
                 moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
             }
         }
+    }
+
+    fun setGenre(name: String) {
+        _selectedGenre.value = name
     }
 }

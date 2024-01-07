@@ -1,6 +1,8 @@
 package ir.movieapp.ui.screens.home
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -411,6 +413,15 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEach { item ->
+            val lineLength = animateFloatAsState(
+                targetValue = if (viewModel.selectedOption.value == item) {
+                    2f
+                } else {
+                    0f
+                }, label = ""
+            )
+
+
             Text(
                 text = item,
                 modifier = Modifier
@@ -449,10 +460,26 @@ fun Genres(
                             )
                         )
                         .clickable {
-                            Timber
-                                .tag("Gernres_HomeScreen")
-                                .e("Genres: %s", genres[index].name)
+                            viewModel.setGenre(genres[index].name)
+                            viewModel.getTrendingMovies(genres[index].id)
+                            viewModel.getPopularMovies(genres[index].id)
+                            viewModel.getUpcomingMovies(genres[index].id)
+                            viewModel.getNowPlayingMovies(genres[index].id)
+                            viewModel.getTopRatedMovies(genres[index].id)
                         }
+                        .background(
+                            if (viewModel.selectedGenre.value == genres[index].name) {
+                                primaryPink
+                            } else {
+                                primaryDark
+                            }
+                        )
+                        .padding(
+                            start = 8.dp,
+                            end = 8.dp,
+                            top = 10.dp,
+                            bottom = 10.dp
+                        ),
                 )
             }
         }
