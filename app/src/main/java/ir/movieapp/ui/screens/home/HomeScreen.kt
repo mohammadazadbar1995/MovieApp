@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,11 +32,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,6 +53,7 @@ import ir.movieapp.R
 import ir.movieapp.ui.screens.commons.MovieItem
 import ir.movieapp.ui.theme.primaryDark
 import ir.movieapp.ui.theme.primaryPink
+import ir.movieapp.util.preview.Constants
 import ir.movieapp.util.preview.Constants.IMAGE_BASE_URL
 import timber.log.Timber
 
@@ -161,7 +167,11 @@ fun HomeScreen(
 
                 item {
                     Text(
-                        text = "Upcoming",
+                        text = if (viewModel.selectedOption.value == Constants.TV_SHOWS) {
+                            "On Air"
+                        } else {
+                            "Upcoming"
+                        },
                         modifier = Modifier.padding(8.dp),
                         fontSize = 22.sp,
                         color = Color.White,
@@ -292,6 +302,7 @@ fun NowPlayingMovies(viewModel: HomeViewModel) {
 @Composable
 fun UpcomingMovies(viewModel: HomeViewModel) {
     val upcomingMovie = viewModel.upcomingMovies.value.collectAsLazyPagingItems()
+    val onAirTvSeries = viewModel.onAirTvSeries.value.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -303,15 +314,29 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            items(upcomingMovie.itemCount) { film ->
-                Timber.e("UpcomingMovies: %s", upcomingMovie[film]?.posterPath)
-                MovieItem(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(130.dp),
-                    imageUrl = "$IMAGE_BASE_URL/${upcomingMovie[film]?.posterPath}"
-                )
+            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                items(upcomingMovie.itemCount) { film ->
+                    Timber.e("UpcomingMovies: %s", upcomingMovie[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${upcomingMovie[film]?.posterPath}"
+                    )
+                }
+            } else {
+
+                items(onAirTvSeries.itemCount) { film ->
+                    Timber.e("OnAirTvSeries: %s", onAirTvSeries[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${onAirTvSeries[film]?.posterPath}"
+                    )
+                }
             }
+
 
             Timber.e("UpcomingMovies: Loading")
             if (upcomingMovie.loadState.refresh is LoadState.Loading) {
@@ -330,6 +355,7 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
 @Composable
 fun PopularMovies(viewModel: HomeViewModel) {
     val popularMovie = viewModel.popularMovies.value.collectAsLazyPagingItems()
+    val popularTvSeries = viewModel.popularTvSeries.value.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -342,19 +368,31 @@ fun PopularMovies(viewModel: HomeViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            items(popularMovie.itemCount) { film ->
-                Timber.e("PopularMovies: %s", popularMovie[film]?.posterPath)
-                MovieItem(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(130.dp),
-                    imageUrl = "$IMAGE_BASE_URL/${popularMovie[film]?.posterPath}"
-                )
+            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                items(popularMovie.itemCount) { film ->
+                    Timber.e("PopularMovies: %s", popularMovie[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${popularMovie[film]?.posterPath}"
+                    )
+                }
+            } else {
+                items(popularTvSeries.itemCount) { film ->
+                    Timber.e("PopularTvSeries: %s", popularTvSeries[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${popularTvSeries[film]?.posterPath}"
+                    )
+                }
             }
 
             Timber.e("PopularMovies: Loading")
 
-            if (popularMovie.loadState.refresh is androidx.paging.LoadState.Loading) {
+            if (popularMovie.loadState.refresh is LoadState.Loading) {
                 item {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -370,6 +408,7 @@ fun PopularMovies(viewModel: HomeViewModel) {
 @Composable
 fun TrendingToday(viewModel: HomeViewModel) {
     val trendingMovie = viewModel.trendingMovies.value.collectAsLazyPagingItems()
+    val trendingTvSeries = viewModel.trendingTvSeries.value.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -380,19 +419,33 @@ fun TrendingToday(viewModel: HomeViewModel) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(220.dp)
         ) {
-            items(trendingMovie.itemCount) { film ->
-                Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)
-                MovieItem(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(230.dp),
-                    imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
-                )
+            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                items(trendingMovie.itemCount) { film ->
+                    Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(230.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
+                    )
+                }
+            } else {
+                items(trendingTvSeries.itemCount) { film ->
+                    Timber.e("TrendingToday: %s", trendingTvSeries[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(220.dp)
+                            .width(250.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${trendingTvSeries[film]?.posterPath}"
+                    )
+                }
             }
 
+
             Timber.e("TrendingToday: Loading")
-            if (trendingMovie.loadState.refresh is androidx.paging.LoadState.Loading) {
+            if (trendingMovie.loadState.refresh is LoadState.Loading) {
                 item {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -413,8 +466,9 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEach { item ->
+            val selectedOption = viewModel.selectedOption.value == item
             val lineLength = animateFloatAsState(
-                targetValue = if (viewModel.selectedOption.value == item) {
+                targetValue = if (selectedOption) {
                     2f
                 } else {
                     0f
@@ -424,10 +478,40 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
 
             Text(
                 text = item,
+                color = if (selectedOption) Color.White else Color.Gray,
+                fontSize = 24.sp,
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable {
+                    .drawBehind {
+                        if (selectedOption) {
+                            if (lineLength.value > 0f) {
+                                drawLine(
+                                    color = if (selectedOption)
+                                        Color.White
+                                    else
+                                        Color.Transparent,
+                                    start = Offset(
+                                        x = size.width / 2f - lineLength.value * 10.dp.toPx(),
+                                        y = size.height
+                                    ),
+                                    end = Offset(
+                                        x = size.width / 2 + lineLength.value * 10.dp.toPx(),
+                                        y = size.height
+                                    ),
+                                    strokeWidth = 2.dp.toPx(),
+                                    cap = StrokeCap.Round
+                                )
+                            }
+                        }
+                    }
 
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember {
+                            MutableInteractionSource()
+                        }
+                    ) {
+                        viewModel.setSelectedOption(item)
                     },
             )
         }
@@ -438,7 +522,12 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
 fun Genres(
     viewModel: HomeViewModel
 ) {
-    val genres = viewModel.movieGenre.value
+
+    val genres = if (viewModel.selectedOption.value == Constants.MOVIES) {
+        viewModel.movieGenre.value
+    } else {
+        viewModel.seriesGenre.value
+    }
 
     Column(
         modifier = Modifier
@@ -460,12 +549,20 @@ fun Genres(
                             )
                         )
                         .clickable {
-                            viewModel.setGenre(genres[index].name)
-                            viewModel.getTrendingMovies(genres[index].id)
-                            viewModel.getPopularMovies(genres[index].id)
-                            viewModel.getUpcomingMovies(genres[index].id)
-                            viewModel.getNowPlayingMovies(genres[index].id)
-                            viewModel.getTopRatedMovies(genres[index].id)
+                            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                                viewModel.setGenre(genres[index].name)
+                                viewModel.getTrendingMovies(genres[index].id)
+                                viewModel.getPopularMovies(genres[index].id)
+                                viewModel.getUpcomingMovies(genres[index].id)
+                                viewModel.getNowPlayingMovies(genres[index].id)
+                                viewModel.getTopRatedMovies(genres[index].id)
+                            } else {
+                                viewModel.setGenre(genres[index].name)
+                                viewModel.getTrendingSeries(genres[index].id)
+                                viewModel.getPopularTvSeries(genres[index].id)
+                                viewModel.getOnAirTvSeries(genres[index].id)
+                            }
+
                         }
                         .background(
                             if (viewModel.selectedGenre.value == genres[index].name) {

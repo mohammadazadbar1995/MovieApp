@@ -21,4 +21,15 @@ class GenreRepository @Inject constructor(
         return Resource.Success(response)
     }
 
+    suspend fun getSeriesGenres(): Resource<GenreResponse> {
+        val response = try {
+            api.getTvSeriesGenres()
+        } catch (e: Exception) {
+            Timber.e("Resource.Error",e.message.toString())
+            return Resource.Error(e.message.toString())
+        }
+        Timber.d("Series genres: $response")
+        return Resource.Success(response)
+    }
+
 }
