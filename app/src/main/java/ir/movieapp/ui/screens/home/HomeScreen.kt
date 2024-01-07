@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,11 +32,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -413,8 +418,9 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEach { item ->
+            val selectedOption = viewModel.selectedOption.value == item
             val lineLength = animateFloatAsState(
-                targetValue = if (viewModel.selectedOption.value == item) {
+                targetValue = if (selectedOption) {
                     2f
                 } else {
                     0f
@@ -424,10 +430,40 @@ fun FilmCategory(items: List<String>, modifier: Modifier, viewModel: HomeViewMod
 
             Text(
                 text = item,
+                color = if (selectedOption) Color.White else Color.Gray,
+                fontSize = 24.sp,
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable {
+                    .drawBehind {
+                        if (selectedOption) {
+                            if (lineLength.value > 0f) {
+                                drawLine(
+                                    color = if (selectedOption)
+                                        Color.White
+                                    else
+                                        Color.Transparent,
+                                    start = Offset(
+                                        x = size.width / 2f - lineLength.value * 10.dp.toPx(),
+                                        y = size.height
+                                    ),
+                                    end = Offset(
+                                        x = size.width / 2 + lineLength.value * 10.dp.toPx(),
+                                        y = size.height
+                                    ),
+                                    strokeWidth = 2.dp.toPx(),
+                                    cap = StrokeCap.Round
+                                )
+                            }
+                        }
+                    }
 
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember {
+                            MutableInteractionSource()
+                        }
+                    ) {
+                        viewModel.setSelectedOption(item)
                     },
             )
         }

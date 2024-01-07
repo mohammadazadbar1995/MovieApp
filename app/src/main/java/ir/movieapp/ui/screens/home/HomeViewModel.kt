@@ -169,4 +169,8 @@ class HomeViewModel @Inject constructor(
     fun setGenre(name: String) {
         _selectedGenre.value = name
     }
+
+    fun setSelectedOption(item: String) {
+        _selectedOption.value = item
+    }
 }
