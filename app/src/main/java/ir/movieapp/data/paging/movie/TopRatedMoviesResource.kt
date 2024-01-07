@@ -1,4 +1,4 @@
-package ir.movieapp.data.paging
+package ir.movieapp.data.paging.movie
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

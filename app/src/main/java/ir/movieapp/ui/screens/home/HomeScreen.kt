@@ -167,7 +167,11 @@ fun HomeScreen(
 
                 item {
                     Text(
-                        text = "Upcoming",
+                        text = if (viewModel.selectedOption.value == Constants.TV_SHOWS) {
+                            "On Air"
+                        } else {
+                            "Upcoming"
+                        },
                         modifier = Modifier.padding(8.dp),
                         fontSize = 22.sp,
                         color = Color.White,
@@ -298,6 +302,7 @@ fun NowPlayingMovies(viewModel: HomeViewModel) {
 @Composable
 fun UpcomingMovies(viewModel: HomeViewModel) {
     val upcomingMovie = viewModel.upcomingMovies.value.collectAsLazyPagingItems()
+    val onAirTvSeries = viewModel.onAirTvSeries.value.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -309,15 +314,29 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            items(upcomingMovie.itemCount) { film ->
-                Timber.e("UpcomingMovies: %s", upcomingMovie[film]?.posterPath)
-                MovieItem(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(130.dp),
-                    imageUrl = "$IMAGE_BASE_URL/${upcomingMovie[film]?.posterPath}"
-                )
+            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                items(upcomingMovie.itemCount) { film ->
+                    Timber.e("UpcomingMovies: %s", upcomingMovie[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${upcomingMovie[film]?.posterPath}"
+                    )
+                }
+            } else {
+
+                items(onAirTvSeries.itemCount) { film ->
+                    Timber.e("OnAirTvSeries: %s", onAirTvSeries[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${onAirTvSeries[film]?.posterPath}"
+                    )
+                }
             }
+
 
             Timber.e("UpcomingMovies: Loading")
             if (upcomingMovie.loadState.refresh is LoadState.Loading) {
@@ -336,6 +355,7 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
 @Composable
 fun PopularMovies(viewModel: HomeViewModel) {
     val popularMovie = viewModel.popularMovies.value.collectAsLazyPagingItems()
+    val popularTvSeries = viewModel.popularTvSeries.value.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -348,14 +368,26 @@ fun PopularMovies(viewModel: HomeViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            items(popularMovie.itemCount) { film ->
-                Timber.e("PopularMovies: %s", popularMovie[film]?.posterPath)
-                MovieItem(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(130.dp),
-                    imageUrl = "$IMAGE_BASE_URL/${popularMovie[film]?.posterPath}"
-                )
+            if (viewModel.selectedOption.value == Constants.MOVIES) {
+                items(popularMovie.itemCount) { film ->
+                    Timber.e("PopularMovies: %s", popularMovie[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${popularMovie[film]?.posterPath}"
+                    )
+                }
+            } else {
+                items(popularTvSeries.itemCount) { film ->
+                    Timber.e("PopularTvSeries: %s", popularTvSeries[film]?.posterPath)
+                    MovieItem(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .width(130.dp),
+                        imageUrl = "$IMAGE_BASE_URL/${popularTvSeries[film]?.posterPath}"
+                    )
+                }
             }
 
             Timber.e("PopularMovies: Loading")
@@ -527,6 +559,8 @@ fun Genres(
                             } else {
                                 viewModel.setGenre(genres[index].name)
                                 viewModel.getTrendingSeries(genres[index].id)
+                                viewModel.getPopularTvSeries(genres[index].id)
+                                viewModel.getOnAirTvSeries(genres[index].id)
                             }
 
                         }

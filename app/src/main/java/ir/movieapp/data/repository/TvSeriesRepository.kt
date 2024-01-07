@@ -4,12 +4,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import ir.movieapp.data.TMDBApi
-import ir.movieapp.data.paging.NowPlayingMoviesSource
-import ir.movieapp.data.paging.PopularMoviesSource
-import ir.movieapp.data.paging.TopRatedMoviesResource
-import ir.movieapp.data.paging.TrendingMoviesSource
-import ir.movieapp.data.paging.TvSeriesTrendingMoviesSource
-import ir.movieapp.data.paging.UpcomingMoviesSource
+import ir.movieapp.data.paging.movie.NowPlayingMoviesSource
+import ir.movieapp.data.paging.movie.PopularMoviesSource
+import ir.movieapp.data.paging.movie.TopRatedMoviesResource
+import ir.movieapp.data.paging.series.TrendingTvSeriesSource
+import ir.movieapp.data.paging.movie.UpcomingMoviesSource
+import ir.movieapp.data.paging.series.OnAirTvSeriesSource
+import ir.movieapp.data.paging.series.PopularTvSeriesSource
+import ir.movieapp.data.remote.response.OnAirResponse
 import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
@@ -23,26 +25,26 @@ class TvSeriesRepository @Inject constructor(private val api: TMDBApi) {
         return Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
-                TvSeriesTrendingMoviesSource(api)
+                TrendingTvSeriesSource(api)
             }
         ).flow
     }
 
-    fun getPopularMovies(): Flow<PagingData<PopularResponse.Popular>> {
+    fun getPopularTvSeries(): Flow<PagingData<PopularResponse.Popular>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
-                PopularMoviesSource(api)
+                PopularTvSeriesSource(api)
             }
         ).flow
     }
 
 
-    fun getUpcomingMovies(): Flow<PagingData<UpcomingResponse.Upcoming>> {
+    fun getOnAirTvSeries(): Flow<PagingData<OnAirResponse.OnAirSeries>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
-                UpcomingMoviesSource(api)
+                OnAirTvSeriesSource(api)
             }
         ).flow
     }

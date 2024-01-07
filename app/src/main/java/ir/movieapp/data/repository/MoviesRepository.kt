@@ -4,11 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import ir.movieapp.data.TMDBApi
-import ir.movieapp.data.paging.NowPlayingMoviesSource
-import ir.movieapp.data.paging.PopularMoviesSource
-import ir.movieapp.data.paging.TopRatedMoviesResource
-import ir.movieapp.data.paging.TrendingMoviesSource
-import ir.movieapp.data.paging.UpcomingMoviesSource
+import ir.movieapp.data.paging.movie.NowPlayingMoviesSource
+import ir.movieapp.data.paging.movie.PopularMoviesSource
+import ir.movieapp.data.paging.movie.TopRatedMoviesResource
+import ir.movieapp.data.paging.movie.TrendingMoviesSource
+import ir.movieapp.data.paging.movie.UpcomingMoviesSource
 import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse

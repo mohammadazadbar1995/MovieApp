@@ -1,4 +1,4 @@
-package ir.movieapp.data.paging
+package ir.movieapp.data.paging.movie
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -8,7 +8,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 
-class TvSeriesTrendingMoviesSource(private val api: TMDBApi) : PagingSource<Int, TrendingResponse.Movie>() {
+class TrendingMoviesSource(private val api: TMDBApi) : PagingSource<Int, TrendingResponse.Movie>() {
 
     override fun getRefreshKey(state: PagingState<Int, TrendingResponse.Movie>): Int? {
         return state.anchorPosition
@@ -17,7 +17,7 @@ class TvSeriesTrendingMoviesSource(private val api: TMDBApi) : PagingSource<Int,
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TrendingResponse.Movie> {
         return try {
             val nextPage = params.key ?: 1
-            val trendingMoviesList = api.getTrendingTvSeries(page = nextPage)
+            val trendingMoviesList = api.getTrendingMovie(page = nextPage)
             Timber.d("trending movies list : ${trendingMoviesList.results}")
             LoadResult.Page(
                 data = trendingMoviesList.results,

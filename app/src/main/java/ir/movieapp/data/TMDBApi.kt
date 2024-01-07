@@ -1,6 +1,7 @@
 package ir.movieapp.data
 
 import ir.movieapp.data.remote.response.GenreResponse
+import ir.movieapp.data.remote.response.OnAirResponse
 import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
@@ -69,5 +70,19 @@ interface TMDBApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = "en"
     ): TrendingResponse
+
+    @GET("tv/popular")
+    suspend fun getPopularTvSeries(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en",
+        @Query("page") page: Int = STARTING_PAGE_INDEX
+    ): PopularResponse
+
+    @GET("tv/on_the_air")
+    suspend fun getOnAirTvSeries(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en",
+        @Query("page") page: Int = STARTING_PAGE_INDEX
+    ): OnAirResponse
 
 }

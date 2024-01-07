@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.movieapp.data.remote.response.GenreResponse
+import ir.movieapp.data.remote.response.OnAirResponse
 import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
@@ -55,9 +56,20 @@ class HomeViewModel @Inject constructor(
         mutableStateOf<Flow<PagingData<PopularResponse.Popular>>>(emptyFlow())
     val popularMovies: State<Flow<PagingData<PopularResponse.Popular>>> = _popularMovies
 
+
+    private var _popularTvSeries =
+        mutableStateOf<Flow<PagingData<PopularResponse.Popular>>>(emptyFlow())
+    val popularTvSeries: State<Flow<PagingData<PopularResponse.Popular>>> = _popularTvSeries
+
     private var _upcomingMovies =
         mutableStateOf<Flow<PagingData<UpcomingResponse.Upcoming>>>(emptyFlow())
     val upcomingMovies: State<Flow<PagingData<UpcomingResponse.Upcoming>>> = _upcomingMovies
+
+
+    private var _onAirTvSeries =
+        mutableStateOf<Flow<PagingData<OnAirResponse.OnAirSeries>>>(emptyFlow())
+    val onAirTvSeries: State<Flow<PagingData<OnAirResponse.OnAirSeries>>> = _onAirTvSeries
+
 
     private var _nowPlayingMovies =
         mutableStateOf<Flow<PagingData<NowPlayingResponse.NowPlaying>>>(emptyFlow())
@@ -82,6 +94,8 @@ class HomeViewModel @Inject constructor(
 
         //series
         getTrendingSeries(null)
+        getPopularTvSeries(null)
+        getOnAirTvSeries(null)
     }
 
 
@@ -221,6 +235,35 @@ class HomeViewModel @Inject constructor(
                 }.cachedIn(viewModelScope)
             } else {
                 seriesRepository.getTrendingTvSeries().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+
+    fun getPopularTvSeries(genreId: Int?) {
+        viewModelScope.launch {
+            _popularTvSeries.value = if (genreId != null) {
+                seriesRepository.getPopularTvSeries().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                seriesRepository.getPopularTvSeries().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getOnAirTvSeries(genreId: Int?) {
+        viewModelScope.launch {
+            _onAirTvSeries.value = if (genreId != null) {
+                seriesRepository.getOnAirTvSeries().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                seriesRepository.getOnAirTvSeries().cachedIn(viewModelScope)
             }
         }
     }
