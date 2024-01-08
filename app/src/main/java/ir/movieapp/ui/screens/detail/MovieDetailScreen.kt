@@ -3,9 +3,10 @@ package ir.movieapp.ui.screens.detail
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import ir.movieapp.util.preview.Resource
 
+@Destination
 @Composable
 fun MovieDetailScreen(
     filmId: Int,
