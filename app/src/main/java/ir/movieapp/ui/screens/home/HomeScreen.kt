@@ -49,8 +49,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ir.movieapp.R
 import ir.movieapp.ui.screens.commons.MovieItem
+import ir.movieapp.ui.screens.destinations.MovieDetailScreenDestination
 import ir.movieapp.ui.theme.primaryDark
 import ir.movieapp.ui.theme.primaryPink
 import ir.movieapp.util.preview.Constants
@@ -61,6 +63,7 @@ import timber.log.Timber
 @Destination
 @Composable
 fun HomeScreen(
+    navigator: DestinationsNavigator,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
@@ -144,6 +147,7 @@ fun HomeScreen(
                 item {
                     TrendingToday(
                         viewModel = viewModel,
+                        navigator
                     )
                 }
 
@@ -162,6 +166,7 @@ fun HomeScreen(
                 item {
                     PopularMovies(
                         viewModel = viewModel,
+                        navigator
                     )
                 }
 
@@ -182,6 +187,7 @@ fun HomeScreen(
                 item {
                     UpcomingMovies(
                         viewModel = viewModel,
+                        navigator
                     )
                 }
 
@@ -198,6 +204,7 @@ fun HomeScreen(
                 item {
                     NowPlayingMovies(
                         viewModel = viewModel,
+                        navigator
                     )
                 }
 
@@ -214,6 +221,7 @@ fun HomeScreen(
                 item {
                     TopRatedMovies(
                         viewModel = viewModel,
+                        navigator
                     )
                 }
             }
@@ -224,7 +232,11 @@ fun HomeScreen(
 }
 
 @Composable
-fun TopRatedMovies(viewModel: HomeViewModel) {
+fun TopRatedMovies(
+    viewModel: HomeViewModel,
+    navigator: DestinationsNavigator
+
+) {
     val topRatedMovies = viewModel.topRatedMovies.value.collectAsLazyPagingItems()
 
     Box(
@@ -242,7 +254,10 @@ fun TopRatedMovies(viewModel: HomeViewModel) {
                 MovieItem(
                     modifier = Modifier
                         .height(200.dp)
-                        .width(130.dp),
+                        .width(130.dp)
+                        .clickable {
+                            navigator.navigate(MovieDetailScreenDestination(topRatedMovies[film]?.id!!))
+                        },
                     imageUrl = "$IMAGE_BASE_URL/${topRatedMovies[film]?.posterPath}"
                 )
             }
@@ -262,7 +277,11 @@ fun TopRatedMovies(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun NowPlayingMovies(viewModel: HomeViewModel) {
+fun NowPlayingMovies(
+    viewModel: HomeViewModel,
+    navigator: DestinationsNavigator
+
+) {
     val nowPlaying = viewModel.nowPlayingMovies.value.collectAsLazyPagingItems()
 
     Box(
@@ -280,7 +299,10 @@ fun NowPlayingMovies(viewModel: HomeViewModel) {
                 MovieItem(
                     modifier = Modifier
                         .height(200.dp)
-                        .width(130.dp),
+                        .width(130.dp)
+                        .clickable {
+                            navigator.navigate(MovieDetailScreenDestination(nowPlaying[film]?.id!!))
+                        },
                     imageUrl = "$IMAGE_BASE_URL/${nowPlaying[film]?.posterPath}"
                 )
             }
@@ -300,7 +322,10 @@ fun NowPlayingMovies(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun UpcomingMovies(viewModel: HomeViewModel) {
+fun UpcomingMovies(
+    viewModel: HomeViewModel,
+    navigator: DestinationsNavigator
+) {
     val upcomingMovie = viewModel.upcomingMovies.value.collectAsLazyPagingItems()
     val onAirTvSeries = viewModel.onAirTvSeries.value.collectAsLazyPagingItems()
 
@@ -320,7 +345,10 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
                     MovieItem(
                         modifier = Modifier
                             .height(200.dp)
-                            .width(130.dp),
+                            .width(130.dp)
+                            .clickable {
+                                navigator.navigate(MovieDetailScreenDestination(upcomingMovie[film]?.id!!))
+                            },
                         imageUrl = "$IMAGE_BASE_URL/${upcomingMovie[film]?.posterPath}"
                     )
                 }
@@ -331,7 +359,10 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
                     MovieItem(
                         modifier = Modifier
                             .height(200.dp)
-                            .width(130.dp),
+                            .width(130.dp)
+                            .clickable {
+                                navigator.navigate(MovieDetailScreenDestination(onAirTvSeries[film]?.id!!))
+                            },
                         imageUrl = "$IMAGE_BASE_URL/${onAirTvSeries[film]?.posterPath}"
                     )
                 }
@@ -353,7 +384,10 @@ fun UpcomingMovies(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun PopularMovies(viewModel: HomeViewModel) {
+fun PopularMovies(
+    viewModel: HomeViewModel,
+    navigator: DestinationsNavigator
+) {
     val popularMovie = viewModel.popularMovies.value.collectAsLazyPagingItems()
     val popularTvSeries = viewModel.popularTvSeries.value.collectAsLazyPagingItems()
 
@@ -374,7 +408,10 @@ fun PopularMovies(viewModel: HomeViewModel) {
                     MovieItem(
                         modifier = Modifier
                             .height(200.dp)
-                            .width(130.dp),
+                            .width(130.dp)
+                            .clickable {
+                                navigator.navigate(MovieDetailScreenDestination(popularMovie[film]?.id!!))
+                            },
                         imageUrl = "$IMAGE_BASE_URL/${popularMovie[film]?.posterPath}"
                     )
                 }
@@ -384,7 +421,10 @@ fun PopularMovies(viewModel: HomeViewModel) {
                     MovieItem(
                         modifier = Modifier
                             .height(200.dp)
-                            .width(130.dp),
+                            .width(130.dp)
+                            .clickable {
+                                navigator.navigate(MovieDetailScreenDestination(popularTvSeries[film]?.id!!))
+                            },
                         imageUrl = "$IMAGE_BASE_URL/${popularTvSeries[film]?.posterPath}"
                     )
                 }
@@ -406,7 +446,11 @@ fun PopularMovies(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun TrendingToday(viewModel: HomeViewModel) {
+fun TrendingToday(
+    viewModel: HomeViewModel,
+    navigator: DestinationsNavigator
+
+) {
     val trendingMovie = viewModel.trendingMovies.value.collectAsLazyPagingItems()
     val trendingTvSeries = viewModel.trendingTvSeries.value.collectAsLazyPagingItems()
 
@@ -427,7 +471,10 @@ fun TrendingToday(viewModel: HomeViewModel) {
                     MovieItem(
                         modifier = Modifier
                             .height(200.dp)
-                            .width(230.dp),
+                            .width(230.dp)
+                            .clickable {
+                                navigator.navigate(MovieDetailScreenDestination(trendingMovie[film]?.id!!))
+                            },
                         imageUrl = "$IMAGE_BASE_URL/${trendingMovie[film]?.posterPath}"
                     )
                 }
@@ -437,7 +484,10 @@ fun TrendingToday(viewModel: HomeViewModel) {
                     MovieItem(
                         modifier = Modifier
                             .height(220.dp)
-                            .width(250.dp),
+                            .width(250.dp)
+                            .clickable {
+                                navigator.navigate(MovieDetailScreenDestination(trendingMovie[film]?.id!!))
+                            },
                         imageUrl = "$IMAGE_BASE_URL/${trendingTvSeries[film]?.posterPath}"
                     )
                 }
