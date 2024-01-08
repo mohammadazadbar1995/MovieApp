@@ -13,6 +13,7 @@ import ir.movieapp.data.remote.response.OnAirResponse
 import ir.movieapp.data.remote.response.PopularResponse
 import ir.movieapp.data.remote.response.TopRatedResponse
 import ir.movieapp.data.remote.response.TrendingResponse
+import ir.movieapp.data.remote.response.commen.Genre
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
 import ir.movieapp.data.repository.NowPlayingResponse
@@ -38,11 +39,11 @@ class HomeViewModel @Inject constructor(
     val selectedOption: State<String> = _selectedOption
 
 
-    private val _movieGenre = mutableStateOf<List<GenreResponse.Genre>>(emptyList())
-    val movieGenre: State<List<GenreResponse.Genre>> = _movieGenre
+    private val _movieGenre = mutableStateOf<List<Genre>>(emptyList())
+    val movieGenre: State<List<Genre>> = _movieGenre
 
-    private val _seriesGenre = mutableStateOf<List<GenreResponse.Genre>>(emptyList())
-    val seriesGenre: State<List<GenreResponse.Genre>> = _seriesGenre
+    private val _seriesGenre = mutableStateOf<List<Genre>>(emptyList())
+    val seriesGenre: State<List<Genre>> = _seriesGenre
 
     private var _trendingMovies =
         mutableStateOf<Flow<PagingData<TrendingResponse.Movie>>>(emptyFlow())
