@@ -1,12 +1,16 @@
 package ir.movieapp.ui.screens.detail
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -32,14 +36,22 @@ fun MovieDetailScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        if (details is Resource.Success) {
-            MovieBanner(
-                navigator = navigator,
-                movieData = details.data!!,
-                scrollState = scrollState
-            )
-        } else {
-            CircularProgressIndicator()
+        Column {
+            if (details is Resource.Success) {
+                MovieBanner(
+                    navigator = navigator,
+                    movieData = details.data!!,
+                    scrollState = scrollState
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                FilmInfoDetail(navigator = navigator, movieData = details.data)
+
+            } else {
+                CircularProgressIndicator()
+            }
         }
+
     }
 }
