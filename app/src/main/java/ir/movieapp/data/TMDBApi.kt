@@ -11,6 +11,7 @@ import ir.movieapp.data.repository.UpcomingResponse
 import ir.movieapp.util.preview.Constants.API_KEY
 import ir.movieapp.util.preview.Constants.STARTING_PAGE_INDEX
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBApi {
@@ -86,11 +87,11 @@ interface TMDBApi {
         @Query("page") page: Int = STARTING_PAGE_INDEX
     ): OnAirResponse
 
-    @GET("movie/{movie_id")
+    @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
+        @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = "en",
-        @Query("movie_id") movieId: Int
     ): MovieDetailResponse
 
 }
