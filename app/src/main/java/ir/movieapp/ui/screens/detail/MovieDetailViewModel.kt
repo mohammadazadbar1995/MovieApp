@@ -28,25 +28,30 @@ class MovieDetailViewModel @Inject constructor(
     val movieDetail: State<MovieDetailResponse?> = _movieDetail
 
 
-
-    suspend fun getMovieDetail(movieId: Int) {
-        viewModelScope.launch {
-            when (val result = movieDetailRepository.getMovieDetail(movieId)) {
-                is Resource.Success -> {
-                    _movieDetail.value = result.data!!
-                }
-                is Resource.Error -> {
-                    //loadingError.value = result.message.toString()
-                }
-
-                is Resource.Loading -> {
-                    //loading.value = true
-                }
-
-                else -> {}
-            }
-        }
+    suspend fun getMovieDetails(movieId: Int): Resource<MovieDetailResponse> {
+        return movieDetailRepository.getMovieDetail(movieId)
     }
+
+
+
+    /*    suspend fun getMovieDetail(movieId: Int) {
+            viewModelScope.launch {
+                when (val result = movieDetailRepository.getMovieDetail(movieId)) {
+                    is Resource.Success -> {
+                        _movieDetail.value = result.data!!
+                    }
+                    is Resource.Error -> {
+                        //loadingError.value = result.message.toString()
+                    }
+
+                    is Resource.Loading -> {
+                        //loading.value = true
+                    }
+
+                    else -> {}
+                }
+            }
+        }*/
 
 
 }
