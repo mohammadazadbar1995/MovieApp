@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.movieapp.data.remote.response.CreditsResponse
 import ir.movieapp.data.remote.response.MovieDetailResponse
 import ir.movieapp.data.remote.response.commen.Genre
 import ir.movieapp.data.repository.MovieDetailRepository
@@ -32,6 +33,9 @@ class MovieDetailViewModel @Inject constructor(
         return movieDetailRepository.getMovieDetail(movieId)
     }
 
+    suspend fun getMovieCredits(movieId: Int): Resource<CreditsResponse> {
+        return movieDetailRepository.getMovieCredits(movieId)
+    }
 
 
     /*    suspend fun getMovieDetail(movieId: Int) {
