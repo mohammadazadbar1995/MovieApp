@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import ir.movieapp.data.remote.response.CreditsResponse
 import ir.movieapp.data.remote.response.MovieDetailResponse
 import ir.movieapp.util.preview.Resource
 
@@ -31,6 +32,9 @@ fun MovieDetailScreen(
         value = viewModel.getMovieDetails(filmId)
     }.value
 
+    val credits = produceState<Resource<CreditsResponse>>(initialValue = Resource.Loading()) {
+        value = viewModel.getMovieCredits(filmId)
+    }.value
 
     Box(
         modifier = Modifier
@@ -46,7 +50,11 @@ fun MovieDetailScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                FilmInfoDetail(navigator = navigator, movieData = details.data)
+                FilmInfoDetail(
+                    navigator = navigator,
+                    movieData = details.data,
+                    casts = credits.data?.cast
+                )
 
             } else {
                 CircularProgressIndicator()

@@ -1,5 +1,6 @@
 package ir.movieapp.data
 
+import ir.movieapp.data.remote.response.CreditsResponse
 import ir.movieapp.data.remote.response.GenreResponse
 import ir.movieapp.data.remote.response.MovieDetailResponse
 import ir.movieapp.data.remote.response.OnAirResponse
@@ -94,4 +95,11 @@ interface TMDBApi {
         @Query("language") language: String = "en",
     ): MovieDetailResponse
 
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = "en",
+    ): CreditsResponse
 }
