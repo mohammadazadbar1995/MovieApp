@@ -1,16 +1,20 @@
 package ir.movieapp.data.remote.response
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class CreditsResponse(
     @SerializedName("cast")
-    val cast: List<Cast>,
+    val casts: List<Cast>,
     @SerializedName("crew")
     val crew: List<Crew>,
     @SerializedName("id")
     val id: Int
-) {
+) : Parcelable {
+    @Parcelize
     data class Cast(
         @SerializedName("adult")
         val adult: Boolean,
@@ -35,9 +39,10 @@ data class CreditsResponse(
         @SerializedName("popularity")
         val popularity: Double,
         @SerializedName("profile_path")
-        val profilePath: String
-    )
+        val profilePath: String? = "https://pixy.org/src/9/94083.png"
+    ) : Parcelable
 
+    @Parcelize
     data class Crew(
         @SerializedName("adult")
         val adult: Boolean,
@@ -61,5 +66,5 @@ data class CreditsResponse(
         val popularity: Double,
         @SerializedName("profile_path")
         val profilePath: String
-    )
+    ) : Parcelable
 }
