@@ -32,7 +32,7 @@ fun MovieDetailScreen(
         value = viewModel.getMovieDetails(filmId)
     }.value
 
-    val credits = produceState<Resource<CreditsResponse>>(initialValue = Resource.Loading()) {
+    val casts = produceState<Resource<CreditsResponse>>(initialValue = Resource.Loading()) {
         value = viewModel.getMovieCredits(filmId)
     }.value
 
@@ -53,7 +53,7 @@ fun MovieDetailScreen(
                 FilmInfoDetail(
                     navigator = navigator,
                     movieData = details.data,
-                    casts = credits.data?.cast
+                    casts = casts
                 )
 
             } else {
