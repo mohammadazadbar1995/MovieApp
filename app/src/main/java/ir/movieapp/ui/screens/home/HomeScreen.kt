@@ -67,168 +67,163 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Scaffold(
-            topBar = {
-                Surface(shadowElevation = 5.dp) {
-                    TopAppBar(
-                        modifier = Modifier.fillMaxWidth(),
-                        title = {
-                            Column {
-                                Image(
-                                    modifier = Modifier
-                                        .size(width = 90.dp, height = 90.dp)
-                                        .padding(8.dp),
-                                    painter = painterResource(id = R.drawable.muviz),
-                                    contentDescription = "Image",
-                                    colorFilter = ColorFilter.tint(color = primaryPink)
-                                )
-                            }
-                        },
-                        colors = topAppBarColors(containerColor = primaryDark),
-                        actions = {
-                            IconButton(onClick = { /* doSomething() */ }) {
-                                Icon(Icons.Filled.Search, contentDescription = null)
-                            }
-                        },
-                    )
-                }
-            }
-        ) { innerPadding ->
-            LazyColumn(
-                modifier = Modifier
-                    .padding(top = innerPadding.calculateTopPadding())
-                    .fillMaxSize()
-            ) {
 
-                item {
-                    FilmCategory(
-                        listOf("Movies", "Tv Shows"),
-                        modifier = Modifier.fillMaxWidth(),
-                        viewModel = viewModel
-                    )
-
-
-                }
-
-                item {
-                    Text(
-                        text = "Genres",
-                        modifier = Modifier.padding(8.dp),
-                        fontSize = 22.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                }
-
-                item {
-                    Genres(
-                        viewModel = viewModel,
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "Trending today",
-                        modifier = Modifier.padding(8.dp),
-                        fontSize = 22.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                }
-
-                item {
-                    TrendingToday(
-                        viewModel = viewModel,
-                        navigator
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "Popular Movies",
-                        modifier = Modifier.padding(8.dp),
-                        fontSize = 22.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                }
-
-                item {
-                    PopularMovies(
-                        viewModel = viewModel,
-                        navigator
-                    )
-                }
-
-                item {
-                    Text(
-                        text = if (viewModel.selectedOption.value == Constants.TV_SHOWS) {
-                            "On Air"
-                        } else {
-                            "Upcoming"
-                        },
-                        modifier = Modifier.padding(8.dp),
-                        fontSize = 22.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                item {
-                    UpcomingMovies(
-                        viewModel = viewModel,
-                        navigator
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "Now Playing",
-                        modifier = Modifier.padding(8.dp),
-                        fontSize = 22.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                item {
-                    NowPlayingMovies(
-                        viewModel = viewModel,
-                        navigator
-                    )
-                }
-
-                item {
-                    Text(
-                        text = "Top Rated",
-                        modifier = Modifier.padding(8.dp),
-                        fontSize = 22.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                item {
-                    TopRatedMovies(
-                        viewModel = viewModel,
-                        navigator
-                    )
-                }
+    Scaffold(
+        topBar = {
+            Surface(shadowElevation = 5.dp) {
+                TopAppBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = {
+                        Column {
+                            Image(
+                                modifier = Modifier
+                                    .size(width = 90.dp, height = 90.dp)
+                                    .padding(8.dp),
+                                painter = painterResource(id = R.drawable.muviz),
+                                contentDescription = "Image",
+                                colorFilter = ColorFilter.tint(color = primaryPink)
+                            )
+                        }
+                    },
+                    colors = topAppBarColors(containerColor = primaryDark),
+                    actions = {
+                        IconButton(onClick = { /* doSomething() */ }) {
+                            Icon(Icons.Filled.Search, contentDescription = null)
+                        }
+                    },
+                )
             }
         }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(top = innerPadding.calculateTopPadding())
+                .fillMaxSize()
+        ) {
+
+            item {
+                FilmCategory(
+                    listOf("Movies", "Tv Shows"),
+                    modifier = Modifier.fillMaxWidth(),
+                    viewModel = viewModel
+                )
 
 
+            }
+
+            item {
+                Text(
+                    text = "Genres",
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+            }
+
+            item {
+                Genres(
+                    viewModel = viewModel,
+                )
+            }
+
+            item {
+                Text(
+                    text = "Trending today",
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+            }
+
+            item {
+                TrendingToday(
+                    viewModel = viewModel,
+                    navigator
+                )
+            }
+
+            item {
+                Text(
+                    text = "Popular Movies",
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+            }
+
+            item {
+                PopularMovies(
+                    viewModel = viewModel,
+                    navigator
+                )
+            }
+
+            item {
+                Text(
+                    text = if (viewModel.selectedOption.value == Constants.TV_SHOWS) {
+                        "On Air"
+                    } else {
+                        "Upcoming"
+                    },
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            item {
+                UpcomingMovies(
+                    viewModel = viewModel,
+                    navigator
+                )
+            }
+
+            item {
+                Text(
+                    text = "Now Playing",
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            item {
+                NowPlayingMovies(
+                    viewModel = viewModel,
+                    navigator
+                )
+            }
+
+            item {
+                Text(
+                    text = "Top Rated",
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            item {
+                TopRatedMovies(
+                    viewModel = viewModel,
+                    navigator
+                )
+            }
+        }
     }
+
 }
 
 @Composable

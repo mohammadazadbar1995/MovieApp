@@ -40,4 +40,6 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    val favorites = repository.getAllFavorites()
+
 }
