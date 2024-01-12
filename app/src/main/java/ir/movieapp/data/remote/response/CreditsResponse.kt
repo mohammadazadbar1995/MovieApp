@@ -65,6 +65,6 @@ data class CreditsResponse(
         @SerializedName("popularity")
         val popularity: Double,
         @SerializedName("profile_path")
-        val profilePath: String
+        val profilePath: String? = "https://pixy.org/src/9/94083.png"
     ) : Parcelable
 }
