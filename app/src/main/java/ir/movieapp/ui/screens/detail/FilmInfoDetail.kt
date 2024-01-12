@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +45,7 @@ import ir.movieapp.data.remote.response.CreditsResponse
 import ir.movieapp.data.remote.response.MovieDetailResponse
 import ir.movieapp.ui.screens.commons.CastItemView
 import ir.movieapp.ui.screens.destinations.CastsScreenDestination
+import ir.movieapp.ui.theme.AppBarExpendedHeight
 import ir.movieapp.ui.theme.primaryPink
 import ir.movieapp.util.preview.Resource
 
@@ -50,46 +54,55 @@ fun FilmInfoDetail(
     navigator: DestinationsNavigator,
     movieData: MovieDetailResponse,
     casts: Resource<CreditsResponse>,
+    scrollState: LazyListState,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
+    LazyColumn(contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState) {
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
 
-        Text(
-            text = stringResource(id = R.string.release_date),
-            fontSize = 16.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 4.dp)
-        )
+                Text(
+                    text = stringResource(id = R.string.release_date),
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
 
-        Text(
-            text = movieData.releaseDate,
-            fontSize = 14.sp,
-            color = Color.LightGray,
-            fontWeight = FontWeight.Normal,
-            modifier = Modifier.padding(top = 4.dp)
-        )
+                Text(
+                    text = movieData.releaseDate,
+                    fontSize = 14.sp,
+                    color = Color.LightGray,
+                    fontWeight = FontWeight.Normal,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
 
 
-        Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-        ExpandableText(text = movieData.overview, modifier = Modifier.fillMaxWidth())
+                ExpandableText(text = movieData.overview, modifier = Modifier.fillMaxWidth())
 
-        if (casts is Resource.Success) {
-            CastViewDetail(
-                navigator = navigator,
-                casts.data!!,
-            )
+            }
+        }
+
+        item {
+            if (casts is Resource.Success) {
+                CastViewDetail(
+                    navigator = navigator,
+                    casts.data!!,
+                )
+            }
         }
     }
+
 }
 
 @Composable
 fun CastViewDetail(
-    navigator : DestinationsNavigator,
+    navigator: DestinationsNavigator,
     creditsResponse: CreditsResponse?,
 ) {
 
@@ -167,6 +180,7 @@ fun CastView(
         ) {
             items(creditsResponse?.casts?.size!!) {
                 CastItemView(
+                    size = 90.dp,
                     cast = creditsResponse.casts[it]
                 )
             }

@@ -90,6 +90,7 @@ fun CastsScreen(
         ) {
             items(creditsResponse.casts.size) { castItem ->
                 CastItemView(
+                    size = 170.dp,
                     cast = creditsResponse.casts[castItem]
                 )
             }

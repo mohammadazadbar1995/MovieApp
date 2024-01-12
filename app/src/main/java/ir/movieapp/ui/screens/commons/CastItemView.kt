@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -27,7 +28,10 @@ import ir.movieapp.data.remote.response.CreditsResponse
 import ir.movieapp.util.preview.Constants
 
 @Composable
-fun CastItemView(cast: CreditsResponse.Cast) {
+fun CastItemView(
+    cast: CreditsResponse.Cast,
+    size: Dp,
+    ) {
     Column(
         modifier = Modifier
             .wrapContentSize(),
@@ -45,8 +49,8 @@ fun CastItemView(cast: CreditsResponse.Cast) {
             contentDescription = "avatar",
             contentScale = ContentScale.Crop,            // crop the image if it's not a square
             modifier = Modifier
-                .size(96.dp)
-                .padding(4.dp)
+                .size(size)
+                .padding(8.dp)
                 .clip(CircleShape)                       // clip to the circle shape
                 .border(2.dp, Color.Gray, CircleShape)   // add a border (optional)
         )
@@ -55,8 +59,8 @@ fun CastItemView(cast: CreditsResponse.Cast) {
 
         Text(
             text = cast.name,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Light,
             color = Color.White
         )
     }

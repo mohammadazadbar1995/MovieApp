@@ -40,26 +40,22 @@ fun MovieDetailScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column {
-            if (details is Resource.Success) {
-                MovieBanner(
-                    navigator = navigator,
-                    movieData = details.data!!,
-                    scrollState = scrollState
-                )
+        if (details is Resource.Success) {
+            MovieBanner(
+                navigator = navigator,
+                movieData = details.data!!,
+                scrollState = scrollState
+            )
 
-                Spacer(modifier = Modifier.height(10.dp))
+            FilmInfoDetail(
+                scrollState = scrollState,
+                navigator = navigator,
+                movieData = details.data,
+                casts = casts
+            )
 
-                FilmInfoDetail(
-                    navigator = navigator,
-                    movieData = details.data,
-                    casts = casts
-                )
-
-            } else {
-                CircularProgressIndicator()
-            }
+        } else {
+            CircularProgressIndicator()
         }
-
     }
 }
