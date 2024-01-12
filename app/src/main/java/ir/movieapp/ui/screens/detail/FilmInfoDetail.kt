@@ -180,6 +180,7 @@ fun CastView(
         ) {
             items(creditsResponse?.casts?.size!!) {
                 CastItemView(
+                    size = 90.dp,
                     cast = creditsResponse.casts[it]
                 )
             }
