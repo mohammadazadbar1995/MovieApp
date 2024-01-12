@@ -16,6 +16,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ir.movieapp.data.remote.response.CreditsResponse
 import ir.movieapp.data.remote.response.MovieDetailResponse
+import ir.movieapp.ui.screens.favorite.FavoriteViewModel
 import ir.movieapp.util.preview.Resource
 
 @Destination
@@ -24,6 +25,7 @@ fun MovieDetailScreen(
     filmId: Int,
     navigator: DestinationsNavigator,
     viewModel: MovieDetailViewModel = hiltViewModel(),
+    favoriteViewModel: FavoriteViewModel = hiltViewModel()
 ) {
 
     val scrollState = rememberLazyListState()
@@ -41,18 +43,20 @@ fun MovieDetailScreen(
             .fillMaxSize()
     ) {
         if (details is Resource.Success) {
-            MovieBanner(
-                navigator = navigator,
-                movieData = details.data!!,
-                scrollState = scrollState
-            )
-
             FilmInfoDetail(
                 scrollState = scrollState,
                 navigator = navigator,
-                movieData = details.data,
+                movieData = details.data!!,
                 casts = casts
             )
+
+                MovieBanner(
+                    navigator = navigator,
+                    movieData = details.data!!,
+                    scrollState = scrollState,
+                    favoriteViewModel = favoriteViewModel,
+                )
+
 
         } else {
             CircularProgressIndicator()

@@ -13,4 +13,8 @@ object Constants {
 
     const val MOVIES: String = "Movies"
     const val TV_SHOWS: String = "Tv Shows"
+
+    const val TABLE_NAME = "favorites_table"
+
+    const val DATABASE_NAME = "favorites_database"
 }

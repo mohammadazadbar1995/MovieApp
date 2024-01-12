@@ -21,7 +21,7 @@ fun CircularFavoriteButtons(
 ) {
     IconButton(
         onClick = {
-            onClick(!isLiked)
+            onClick(isLiked)
         }
     ) {
         Icon(
