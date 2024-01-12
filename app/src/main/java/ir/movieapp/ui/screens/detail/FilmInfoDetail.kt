@@ -56,11 +56,13 @@ fun FilmInfoDetail(
     casts: Resource<CreditsResponse>,
     scrollState: LazyListState,
 ) {
-    LazyColumn(contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState) {
+    LazyColumn(
+        contentPadding = PaddingValues(top = AppBarExpendedHeight),
+        state = scrollState) {
         item {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(8.dp)
             ) {
 

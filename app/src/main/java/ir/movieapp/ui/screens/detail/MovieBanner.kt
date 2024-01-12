@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.foundation.lazy.LazyListState
@@ -16,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -34,10 +37,12 @@ import coil.request.ImageRequest
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import ir.movieapp.data.local.Favorite
 import ir.movieapp.data.remote.response.MovieDetailResponse
 import ir.movieapp.ui.screens.commons.CircularBackButtons
 import ir.movieapp.ui.screens.commons.CircularFavoriteButtons
 import ir.movieapp.ui.screens.commons.VoteAverageRatingIndicator
+import ir.movieapp.ui.screens.favorite.FavoriteViewModel
 import ir.movieapp.ui.theme.AppBarCollapsedHeight
 import ir.movieapp.ui.theme.AppBarExpendedHeight
 import ir.movieapp.ui.theme.primaryDark
@@ -50,7 +55,8 @@ import kotlin.math.min
 fun MovieBanner(
     scrollState: LazyListState,
     navigator: DestinationsNavigator,
-    movieData: MovieDetailResponse?
+    movieData: MovieDetailResponse?,
+    favoriteViewModel: FavoriteViewModel
 ) {
 
     val context = LocalContext.current
@@ -65,99 +71,111 @@ fun MovieBanner(
 
     val offsetProgress = max(0f, offset * 3f - 2f * maxOffset) / maxOffset
 
+    Box(
+        modifier = Modifier
+            .height(
+                AppBarExpendedHeight
+            )
+            .offset { IntOffset(x = 0, y = -offset) },
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("${Constants.IMAGE_BASE_URL}/${movieData?.posterPath}")
+                    .crossfade(true)
+                    .build(),
+            ),
+            modifier = Modifier
+                .fillMaxSize()
+                .height(imageHeight)
+                .graphicsLayer {
+                    alpha = 1f - offsetProgress
+                },
+            contentScale = ContentScale.Crop,
+            contentDescription = "Movie Banner"
+        )
 
-    Column {
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(AppBarExpendedHeight)
-                .safeGesturesPadding(),
+                .statusBarsPadding()
+                .padding(vertical = 16.dp, horizontal = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data("${Constants.IMAGE_BASE_URL}/${movieData?.posterPath}")
-                        .crossfade(true)
-                        .build(),
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(imageHeight)
-                    .graphicsLayer {
-                        alpha = 1f - offsetProgress
-                    },
-                contentScale = ContentScale.Crop,
-                contentDescription = "Movie Banner"
+            CircularBackButtons(
+                onClick = {
+                    navigator.popBackStack()
+                }
             )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .padding(vertical = 16.dp, horizontal = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                CircularBackButtons(
-                    onClick = {
-                        navigator.popBackStack()
-                    }
-                )
+            val isFavorite = favoriteViewModel
+                .isFavorite(movieData?.id!!)
+                .observeAsState().value != null
 
-                var isLink by remember {
-                    mutableStateOf(
-                        true
-                    )
+            var isFavoriteRemember by remember {
+                mutableStateOf(isFavorite)
+            }
+
+            CircularFavoriteButtons(
+                isLiked = isFavorite,
+                onClick = { isFav ->
+                    if (isFav) {
+                        favoriteViewModel.deleteFavoriteById(movieData.id)
+
+                        Toast.makeText(
+                            context,
+                            "Removed from your favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        favoriteViewModel.insertFavorite(
+                            favorite = Favorite(
+                                favorite = true,
+                                mediaId = movieData.id,
+                                mediaType = "movie",
+                                title = movieData.title,
+                                releaseDate = movieData.releaseDate,
+                                rating = movieData.voteAverage.toFloat(),
+                                image = movieData.posterPath
+                            )
+                        )
+                        Toast.makeText(
+                            context,
+                            "Added to your favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    isFavoriteRemember = !isFav
                 }
-                CircularFavoriteButtons(
-                    isLiked = isLink,
-                    onClick = {
-                        if (it) {
-                            Toast.makeText(
-                                context,
-                                "Added to your favorites",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "Removed from your favorites",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        isLink = it
-                    }
-                )
+            )
 
-
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomStart)
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom,
-
-                ) {
-                Text(
-                    text = movieData?.title ?: "",
-                    fontSize = 18.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    )
-
-                VoteAverageRatingIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth(0.17f),
-                    percentage = movieData?.voteAverage?.toFloat() ?: 0f
-                )
-
-            }
 
         }
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart)
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+
+            ) {
+            Text(
+                text = movieData?.title ?: "",
+                fontSize = 18.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+            )
+
+            VoteAverageRatingIndicator(
+                modifier = Modifier
+                    .fillMaxWidth(0.17f),
+                percentage = movieData?.voteAverage?.toFloat() ?: 0f
+            )
+
+        }
 
     }
 }

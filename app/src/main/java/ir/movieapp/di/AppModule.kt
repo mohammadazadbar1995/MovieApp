@@ -1,13 +1,17 @@
 package ir.movieapp.di
 
+import android.app.Application
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.movieapp.data.TMDBApi
+import ir.movieapp.data.local.FavoriteDataBase
 import ir.movieapp.data.repository.GenreRepository.GenreRepository
 import ir.movieapp.data.repository.MoviesRepository
 import ir.movieapp.util.preview.Constants.BASE_URL
+import ir.movieapp.util.preview.Constants.DATABASE_NAME
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -59,5 +63,16 @@ object AppModule {
     @Singleton
     fun providesMoviesRepository(api: TMDBApi): MoviesRepository {
         return MoviesRepository(api)
+    }
+
+
+    @Provides
+    @Singleton
+    fun providesFavoriteDatabase(application: Application): FavoriteDataBase {
+        return Room.databaseBuilder(
+            application.applicationContext,
+            FavoriteDataBase::class.java,
+            DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()
     }
 }
