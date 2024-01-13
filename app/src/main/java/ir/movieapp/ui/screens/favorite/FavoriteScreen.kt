@@ -1,6 +1,5 @@
 package ir.movieapp.ui.screens.favorite
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,12 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,8 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -44,23 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ir.movieapp.R
 import ir.movieapp.data.local.Favorite
 import ir.movieapp.ui.screens.commons.VoteAverageRatingIndicator
-import ir.movieapp.ui.screens.home.FilmCategory
-import ir.movieapp.ui.screens.home.Genres
-import ir.movieapp.ui.screens.home.NowPlayingMovies
-import ir.movieapp.ui.screens.home.PopularMovies
-import ir.movieapp.ui.screens.home.TopRatedMovies
-import ir.movieapp.ui.screens.home.TrendingToday
-import ir.movieapp.ui.screens.home.UpcomingMovies
+import ir.movieapp.ui.screens.destinations.MovieDetailScreenDestination
 import ir.movieapp.ui.theme.Transparent
 import ir.movieapp.ui.theme.primaryDark
-import ir.movieapp.ui.theme.primaryPink
 import ir.movieapp.util.preview.Constants
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,35 +83,51 @@ fun FavoriteScreen(
             }
         }
     ) { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
-                .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding())
         ) {
-            favorites.value?.let {
-                items(it.size) { index ->
+            LazyColumn{
+                favorites.value?.let {
+                    items(it.size) { index ->
 
-                    Card(
+                        Card(
 
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(230.dp)
-                            .clickable {
-//                                if (favorite.mediaType == "movie") {
-//                                    navigator.navigate(MovieDetailsScreenDestination(favorite.mediaId))
-//                                }
-                            }
-                    ) {
-                        FavoriteItem(
-                            favorite = favorites.value!![index],
-                        )
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(230.dp)
+                                .clickable {
+                                    navigator.navigate(MovieDetailScreenDestination(it[index].mediaId))
+                                }
+                        ) {
+                            FavoriteItem(
+                                favorite = favorites.value!![index],
+                            )
+                        }
                     }
-                    val favorite = it[index]
-                    FavoriteItem(favorite = favorite)
                 }
+
+
             }
 
+            if (favorites.value.isNullOrEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        painter = painterResource(id = R.drawable.ic_empty),
+                        contentDescription = null
+                    )
+                }
+            }
         }
+
     }
 }
 
@@ -133,29 +135,28 @@ fun FavoriteScreen(
 fun FavoriteItem(favorite: Favorite) {
     Box {
         Image(
-            painter = rememberImagePainter(
-                data = favorite.image,
-                builder = {
-                    placeholder(R.drawable.ic_placeholder)
-                    crossfade(true)
-                }
+            painter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("${Constants.IMAGE_BASE_URL}/${favorite.image}")
+                    .crossfade(true)
+                    .build(),
             ),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
             contentDescription = "Movie Banner"
         )
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(
-//                    Brush.verticalGradient(
-//                        colorStops = arrayOf(
-//                            Pair(0.3f, Transparent),
-//                            Pair(1.5f, primaryDark)
-//                        )
-//                    )
-//                )
-//        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            Pair(0.3f, Transparent),
+                            Pair(1.5f, primaryDark)
+                        )
+                    )
+                )
+        )
 
         FilmDetail(
             favorite = favorite
@@ -167,8 +168,10 @@ fun FavoriteItem(favorite: Favorite) {
 fun FilmDetail(favorite: Favorite) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxSize()
+            .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
         Column {
             Text(
