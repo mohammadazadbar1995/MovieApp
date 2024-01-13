@@ -40,6 +40,13 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    fun deleteAllFavorites() {
+        viewModelScope.launch {
+            repository.deleteAllFavorites()
+        }
+    }
+
+
     val favorites = repository.getAllFavorites()
 
 }

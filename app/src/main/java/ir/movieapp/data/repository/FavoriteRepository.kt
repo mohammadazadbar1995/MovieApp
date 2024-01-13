@@ -30,4 +30,8 @@ class FavoriteRepository @Inject constructor(
     fun getAllFavorites(): LiveData<List<Favorite>> {
         return favoriteDataBase.dao.getAllFavorites()
     }
+
+    suspend fun deleteAllFavorites() {
+        favoriteDataBase.dao.deleteAllFavorites()
+    }
 }

@@ -15,10 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,6 +29,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -59,6 +64,8 @@ fun FavoriteScreen(
 
     val favorites = viewModel.favorites.observeAsState()
 
+    val openDialog = remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             Surface(shadowElevation = 5.dp) {
@@ -69,13 +76,14 @@ fun FavoriteScreen(
                             text = "Favorite",
                             color = Color.White,
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-
+                            fontWeight = FontWeight.Bold,
                         )
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = primaryDark),
                     actions = {
-                        IconButton(onClick = { /* doSomething() */ }) {
+                        IconButton(onClick = {
+                            openDialog.value = true
+                        }) {
                             Icon(Icons.Filled.Delete, contentDescription = null)
                         }
                     },
@@ -88,7 +96,7 @@ fun FavoriteScreen(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
         ) {
-            LazyColumn{
+            LazyColumn {
                 favorites.value?.let {
                     items(it.size) { index ->
 
@@ -126,10 +134,45 @@ fun FavoriteScreen(
                     )
                 }
             }
+
+            if (openDialog.value) {
+
+                AlertDialog(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },
+                    title = {
+                        Text(text = "Delete all favorites")
+                    },
+                    text = {
+                        Text("Are you sure you want to delete all favorites?")
+                    },
+                    confirmButton = {
+                        Button(
+
+                            onClick = {
+                                openDialog.value = false
+                                viewModel.deleteAllFavorites()
+                            }) {
+                            Text("Yes")
+                        }
+                    },
+                    dismissButton = {
+                        Button(
+
+                            onClick = {
+                                openDialog.value = false
+                            }) {
+                            Text("No")
+                        }
+                    },
+                )
+            }
         }
 
     }
 }
+
 
 @Composable
 fun FavoriteItem(favorite: Favorite) {
