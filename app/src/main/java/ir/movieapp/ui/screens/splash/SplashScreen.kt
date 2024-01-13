@@ -43,10 +43,10 @@ fun SplashScreen(
         Image(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(90.dp)
+                .size(height = 340.dp, width = 300.dp)
                 .padding(8.dp)
                 .align(alignment = Alignment.Center),
-            painter = painterResource(id = R.drawable.muviz),
+            painter = painterResource(id = R.drawable.movieapp),
             contentDescription = "App-logo"
         )
 

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -77,11 +78,10 @@ fun HomeScreen(
                         Column {
                             Image(
                                 modifier = Modifier
-                                    .size(width = 90.dp, height = 90.dp)
-                                    .padding(8.dp),
-                                painter = painterResource(id = R.drawable.muviz),
+                                    .size(width = 150.dp, height = 150.dp)
+                                    ,
+                                painter = painterResource(id = R.drawable.movieapp),
                                 contentDescription = "Image",
-                                colorFilter = ColorFilter.tint(color = primaryPink)
                             )
                         }
                     },
@@ -240,10 +240,7 @@ fun TopRatedMovies(
             .height(220.dp),
         contentAlignment = Alignment.Center
     ) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        LazyRow{
             items(topRatedMovies.itemCount) { film ->
                 Timber.e("TopRatedMovies: %s", topRatedMovies[film]?.posterPath)
                 MovieItem(
@@ -285,10 +282,7 @@ fun NowPlayingMovies(
             .height(220.dp),
         contentAlignment = Alignment.Center
     ) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        LazyRow {
             items(nowPlaying.itemCount) { film ->
                 Timber.e("NowPlayingMovies: %s", nowPlaying[film]?.posterPath)
                 MovieItem(
@@ -330,10 +324,7 @@ fun UpcomingMovies(
             .height(220.dp),
         contentAlignment = Alignment.Center
     ) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        LazyRow{
             if (viewModel.selectedOption.value == Constants.MOVIES) {
                 items(upcomingMovie.itemCount) { film ->
                     Timber.e("UpcomingMovies: %s", upcomingMovie[film]?.posterPath)
@@ -393,10 +384,7 @@ fun PopularMovies(
         contentAlignment = Alignment.Center
 
     ) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        LazyRow {
             if (viewModel.selectedOption.value == Constants.MOVIES) {
                 items(popularMovie.itemCount) { film ->
                     Timber.e("PopularMovies: %s", popularMovie[film]?.posterPath)
@@ -455,11 +443,7 @@ fun TrendingToday(
             .height(220.dp),
         contentAlignment = Alignment.Center
     ) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-        ) {
+        LazyRow{
             if (viewModel.selectedOption.value == Constants.MOVIES) {
                 items(trendingMovie.itemCount) { film ->
                     Timber.e("TrendingToday: %s", trendingMovie[film]?.posterPath)

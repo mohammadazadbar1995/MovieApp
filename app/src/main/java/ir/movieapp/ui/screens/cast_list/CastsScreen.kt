@@ -59,9 +59,8 @@ fun CastsScreen(
                         Column {
                             Image(
                                 modifier = Modifier
-                                    .size(width = 90.dp, height = 90.dp)
-                                    .padding(8.dp),
-                                painter = painterResource(id = R.drawable.muviz),
+                                    .size(width = 150.dp, height = 150.dp),
+                                painter = painterResource(id = R.drawable.movieapp),
                                 contentDescription = "Image",
                                 colorFilter = ColorFilter.tint(color = primaryPink)
                             )

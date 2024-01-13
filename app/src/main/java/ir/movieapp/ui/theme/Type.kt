@@ -10,11 +10,10 @@ import ir.movieapp.R
 
 
 val quicksand = FontFamily(
-    Font(R.font.quicksand_light, FontWeight.Light),
-    Font(R.font.quicksand_regular, FontWeight.Normal),
-    Font(R.font.quicksand_medium, FontWeight.Medium),
-    Font(R.font.quicksand_semibold, FontWeight.SemiBold),
-    Font(R.font.quicksand_bold, FontWeight.Bold)
+    Font(R.font.font_light, FontWeight.Light),
+    Font(R.font.font_normal, FontWeight.Normal),
+    Font(R.font.font_medium, FontWeight.Medium),
+    Font(R.font.font_bold, FontWeight.Bold),
 )
 
 
