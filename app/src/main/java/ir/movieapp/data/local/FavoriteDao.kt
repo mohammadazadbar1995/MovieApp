@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
+
 @Dao
 interface FavoriteDao {
 
@@ -23,5 +24,8 @@ interface FavoriteDao {
 
     @Delete
     suspend fun deleteAFavorite(favorite: Favorite)
+
+    @Query("DELETE FROM favorites_table")
+    suspend fun deleteAllFavorites()
 
 }
