@@ -22,6 +22,16 @@
 </table>
 
 
+## 🌚 Screenshots
+|   Movies Screen    |  TV Shows Screen    |   Splash Screen   |  SearchScreen |
+|---	|---	|---    |---   
+| ![movie page](https://user-images.githubusercontent.com/95022986/198876688-2ff49872-45f2-4463-b623-138c07f7493b.jpg)|  ![TVShow](https://user-images.githubusercontent.com/95022986/198876753-a691133a-6488-48c6-b967-045da852009f.jpg)|   ![Splash](https://user-images.githubusercontent.com/95022986/198876845-3cf5842e-9afd-42f9-b9d6-86fee72fb58a.jpg)| ![Search](https://user-images.githubusercontent.com/95022986/198876911-634896bd-5b55-430f-b15b-ac22cfe70a0c.jpg)
+
+|    Details Screen    |  My List Screen    | 
+|---	|---
+| ![Details](https://user-images.githubusercontent.com/95022986/198876996-b281495f-a390-4e04-a442-ea79af69d95b.jpg)|  ![myList](https://user-images.githubusercontent.com/95022986/198877108-4b70bf09-eb50-4a1c-b855-19b21e27176c.jpg)
+ |  
+ 
 Here's why:
 # MovieApp
 An Android app built with Jetpack Compose consuming [TMDB API](https://www.themoviedb.org/documentation/api) to help movies.
