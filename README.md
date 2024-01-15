@@ -9,7 +9,6 @@
 |    Genre Screen    |  CastScreen     | 
 |---	|---
 | ![Genre](https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/genre.jpeg)|  ![CastScreen](https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/cast.jpeg)
- |  
  
  
 Here's why:
