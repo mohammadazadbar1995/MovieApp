@@ -1,9 +1,44 @@
-### Structural design pattern
-The app is built with the Model-View-ViewModel (MVVM) is its structural design pattern that separates objects into three distinct groups:
-- Models hold application data. They’re usually structs or simple classes.
-- Views display visual elements and controls on the screen. They’re typically subclasses of UIView.
-- View models transform model information into values that can be displayed on a view. They’re usually classes, so they can be passed around as references.
+<br/>
+<p align="center">
+  <a href="https://github.com/MovieApp/MovieApp">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
+  <h3 align="center">ReadME Generator</h3>
+
+  <p align="center">
+    An Awesome ReadME Generator To Jumpstart Your Projects!
+    <br/>
+    <br/>
+    <a href="https://github.com/MovieApp/MovieApp"><strong>Explore the docs »</strong></a>
+    <br/>
+    <br/>
+    <a href="https://github.com/MovieApp/MovieApp">View Demo</a>
+    .
+    <a href="https://github.com/MovieApp/MovieApp/issues">Report Bug</a>
+    .
+    <a href="https://github.com/MovieApp/MovieApp/issues">Request Feature</a>
+  </p>
+</p>
+
+![Downloads](https://img.shields.io/github/downloads/MovieApp/MovieApp/total) ![Contributors](https://img.shields.io/github/contributors/MovieApp/MovieApp?color=dark-green) ![Issues](https://img.shields.io/github/issues/MovieApp/MovieApp) ![License](https://img.shields.io/github/license/MovieApp/MovieApp) 
+
+## Table Of Contents
+
+* [About the Project](#about-the-project)
+* [Built With](#built-with)
+* [Getting Started](#getting-started)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [Authors](#authors)
+* [Acknowledgements](#acknowledgements)
+
+## About The Project
+
+![Screen Shot](images/screenshot.png)
+
+
+Here's why:
 # MovieApp
 An Android app built with Jetpack Compose consuming [TMDB API](https://www.themoviedb.org/documentation/api) to help movies.
 
@@ -32,7 +67,6 @@ An Android app built with Jetpack Compose consuming [TMDB API](https://www.themo
 - [Timber](https://github.com/JakeWharton/timber)- A logger with a small, extensible API which provides utility on top of Android's normal Log class.
 
 
-
 ## Demo
 ### Splash screen
 ### Home screen
@@ -43,3 +77,35 @@ An Android app built with Jetpack Compose consuming [TMDB API](https://www.themo
 ### Favorites screen
 ### Account screen
 #### Account
+
+## Built With
+
+### Structural design pattern
+The app is built with the Model-View-ViewModel (MVVM) is its structural design pattern that separates objects into three distinct groups:
+- Models hold application data. They’re usually structs or simple classes.
+- Views display visual elements and controls on the screen. They’re typically subclasses of UIView.
+- View models transform model information into values that can be displayed on a view. They’re usually classes, so they can be passed around as references.
+
+## Getting Started
+
+You can clone from :
+https://github.com/mohammadazadbar1995/MovieApp
+
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+* If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/MovieApp/MovieApp/issues/new) to discuss it, or directly create a pull request after you edit the *README.md* file with necessary changes.
+* Please make sure you check your spelling and grammar.
+* Create individual PR for each suggestion.
+* Please also read through the [Code Of Conduct](https://github.com/MovieApp/MovieApp/blob/main/CODE_OF_CONDUCT.md) before posting your first idea as well.
+
+### Creating A Pull Request
+
+
+
+## Authors
+
+* **Mohammad Azadbar** - *Android Developer* -
+* [Mohammad Azadbar](https://github.com/mohammadazadbar1995) - **
+
