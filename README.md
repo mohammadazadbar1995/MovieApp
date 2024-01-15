@@ -2,6 +2,7 @@
 ## About The Project
 
 ![Screen Shot](images/screenshot.png)
+https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg
 
 
 Here's why:
