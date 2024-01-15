@@ -1,28 +1,3 @@
-<br/>
-<p align="center">
-  <a href="https://github.com/MovieApp/MovieApp">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">ReadME Generator</h3>
-
-  <p align="center">
-    An Awesome ReadME Generator To Jumpstart Your Projects!
-    <br/>
-    <br/>
-    <a href="https://github.com/MovieApp/MovieApp"><strong>Explore the docs »</strong></a>
-    <br/>
-    <br/>
-    <a href="https://github.com/MovieApp/MovieApp">View Demo</a>
-    .
-    <a href="https://github.com/MovieApp/MovieApp/issues">Report Bug</a>
-    .
-    <a href="https://github.com/MovieApp/MovieApp/issues">Request Feature</a>
-  </p>
-</p>
-
-![Downloads](https://img.shields.io/github/downloads/MovieApp/MovieApp/total) ![Contributors](https://img.shields.io/github/contributors/MovieApp/MovieApp?color=dark-green) ![Issues](https://img.shields.io/github/issues/MovieApp/MovieApp) ![License](https://img.shields.io/github/license/MovieApp/MovieApp) 
-
 
 ## About The Project
 
