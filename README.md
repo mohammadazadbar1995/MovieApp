@@ -3,6 +3,8 @@
 
 ![Screen Shot]([images/screenshoots/home.jpeg])
 
+![alt text](https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg?raw=true)
+
 
 
 Here's why:
