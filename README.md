@@ -1,7 +1,7 @@
 
 ## About The Project
 
-![alt text](https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg)
+<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
 
 
 
