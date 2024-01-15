@@ -1,14 +1,35 @@
 
 ## About The Project
 
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+<table >
+    <tr>
+        <td>
+            <img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        </td>
+          <td>
+            <img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        </td>
 
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
-<img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        <td>
+            <img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        </td>
+    </tr>
+
+       <tr>
+        <td>
+            <img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        </td>
+          <td>
+            <img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        </td>
+
+          <td>
+            <img src="https://github.com/mohammadazadbar1995/MovieApp/blob/master/app/src/main/res/screenshoots/home.jpeg" width="250"/>
+        </td>
+    </tr>
+    
+</table>
+
 
 Here's why:
 # MovieApp
