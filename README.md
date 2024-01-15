@@ -23,15 +23,6 @@
 
 ![Downloads](https://img.shields.io/github/downloads/MovieApp/MovieApp/total) ![Contributors](https://img.shields.io/github/contributors/MovieApp/MovieApp?color=dark-green) ![Issues](https://img.shields.io/github/issues/MovieApp/MovieApp) ![License](https://img.shields.io/github/license/MovieApp/MovieApp) 
 
-## Table Of Contents
-
-* [About the Project](#about-the-project)
-* [Built With](#built-with)
-* [Getting Started](#getting-started)
-* [Usage](#usage)
-* [Contributing](#contributing)
-* [Authors](#authors)
-* [Acknowledgements](#acknowledgements)
 
 ## About The Project
 
