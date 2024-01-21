@@ -40,17 +40,6 @@ An Android app built with Jetpack Compose consuming [TMDB API](https://www.themo
 - [Timber](https://github.com/JakeWharton/timber)- A logger with a small, extensible API which provides utility on top of Android's normal Log class.
 
 
-## Demo
-### Splash screen
-### Home screen
-#### Movies
-#### Tv Shows
-#### Placeholder
-### Search screen
-### Favorites screen
-### Account screen
-#### Account
-
 ## Built With
 
 ### Structural design pattern
